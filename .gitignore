@@ -1,0 +1,38 @@
+# Composer
+/vendor/
+composer.lock
+
+# PHPUnit
+.phpunit.result.cache
+.phpunit.cache/
+/phpunit.xml
+
+# PHPStan
+phpstan-baseline.neon
+/.phpstan.cache/
+
+# IDE
+/.idea/
+/.vscode/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+
+# Build artifacts
+/build/
+/dist/
+/.cache/
+
+# Test coverage
+/coverage/
+/.coverage/
+/clover.xml
+
+# OS
+Thumbs.db
+.DS_Store
+
+# Environment
+.env
+.env.local
+.env.*.local

@@ -1,0 +1,919 @@
+parameters:
+	ignoreErrors:
+		-
+			message: '#^Parameter \#2 \$params of method BytesCommerce\\Zabbix\\ZabbixClientInterface\:\:call\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ActionService.php
+
+		-
+			message: '#^Parameter \#3 \.\.\.\$values of function sprintf expects bool\|float\|int\|string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ActionService.php
+
+		-
+			message: '#^Access to property \$actionIds on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\DeleteActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Access to property \$actions on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\CreateActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Access to property \$actions on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Cannot access offset ''actionids'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 2
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$actionids of class BytesCommerce\\Zabbix\\Actions\\Dto\\CreateActionResponseDto constructor expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$actionids of class BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateActionResponseDto constructor expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(BytesCommerce\\Zabbix\\Actions\\Dto\\CreateSingleActionDto\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateSingleActionDto\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetActionResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#2 \$params of method BytesCommerce\\Zabbix\\ZabbixClientInterface\:\:call\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Action\:\:create\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\CreateActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Action\:\:delete\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\DeleteActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Action\:\:get\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\GetActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Action\:\:update\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Action.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetAlertResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Alert.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetAuditLogResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/AuditLog.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method BytesCommerce\\Zabbix\\Enums\\EventSourceEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method BytesCommerce\\Zabbix\\Enums\\StatusEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$actionid of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$esc_period of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$filter of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$name of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$operations of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$recovery_operations of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$update_operations of class BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ActionDto.php
+
+		-
+			message: '#^Parameter \$actionid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$alertid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$alerttype of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$clock of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$error of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$esc_step of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$eventid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$mediatypeid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$message of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$p_eventid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$retries of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$sendto of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$status of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$subject of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$userid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AlertDto.php
+
+		-
+			message: '#^Parameter \$action of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$auditid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$clock of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$details of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$ip of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$resource_cuid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$resourceid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$resourcename of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$resourcetype of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Parameter \$userid of class BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/AuditLogDto.php
+
+		-
+			message: '#^Class BytesCommerce\\Zabbix\\Dto\\CreateSingleActionDto not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateActionDto.php
+
+		-
+			message: '#^Parameter \$actions of method BytesCommerce\\Zabbix\\Dto\\CreateActionDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Dto\\CreateSingleActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateActionDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Dto\\CreateActionDto\:\:\$actions has unknown class BytesCommerce\\Zabbix\\Dto\\CreateSingleActionDto as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateActionDto.php
+
+		-
+			message: '#^Class BytesCommerce\\Zabbix\\Zabbix\\Dto\\CreateSingleItemDto not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateItemDto.php
+
+		-
+			message: '#^Parameter \$items of method BytesCommerce\\Zabbix\\Zabbix\\Dto\\CreateItemDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Zabbix\\Dto\\CreateSingleItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateItemDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Zabbix\\Dto\\CreateItemDto\:\:\$items has unknown class BytesCommerce\\Zabbix\\Zabbix\\Dto\\CreateSingleItemDto as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/CreateItemDto.php
+
+		-
+			message: '#^Parameter \$acknowledged of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$acknowledges of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$clock of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$eventid of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$hosts of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$name of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$ns of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$object of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$objectid of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$severity of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$source of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$tags of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \$value of class BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto constructor expects int, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/EventDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\ActionDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetActionResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\AlertDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetAlertResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\AuditLogDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetAuditLogResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\EventDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetEventResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetHostResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetItemResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(array\)\: BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/GetTriggerResponseDto.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method BytesCommerce\\Zabbix\\Enums\\StatusEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$groups of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$host of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$hostid of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$interfaces of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$macros of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$name of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$tags of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Parameter \$templates of class BytesCommerce\\Zabbix\\Actions\\Dto\\HostDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/HostDto.php
+
+		-
+			message: '#^Call to static method from\(\) on an unknown class BytesCommerce\\Zabbix\\Zabbix\\ItemTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Call to static method from\(\) on an unknown class BytesCommerce\\Zabbix\\Zabbix\\ValueTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:getType\(\) has invalid return type BytesCommerce\\Zabbix\\Zabbix\\ItemTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:getValueType\(\) has invalid return type BytesCommerce\\Zabbix\\Zabbix\\ValueTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method BytesCommerce\\Zabbix\\Enums\\StatusEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$delay of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$hostid of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$interfaceid of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$itemid of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$key_ of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$name of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$preprocessing of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$tags of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$type of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects BytesCommerce\\Zabbix\\Zabbix\\ItemTypeEnum, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$type of method BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Zabbix\\ItemTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$value_type of class BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto constructor expects BytesCommerce\\Zabbix\\Zabbix\\ValueTypeEnum, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \$value_type of method BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Zabbix\\ValueTypeEnum\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:\$type has unknown class BytesCommerce\\Zabbix\\Zabbix\\ItemTypeEnum as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Actions\\Dto\\ItemDto\:\:\$value_type has unknown class BytesCommerce\\Zabbix\\Zabbix\\ValueTypeEnum as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/ItemDto.php
+
+		-
+			message: '#^Parameter \#1 \$value of static method BytesCommerce\\Zabbix\\Enums\\StatusEnum\:\:from\(\) expects int\|string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$comments of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects string\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$dependencies of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$description of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$expression of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$priority of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$tags of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects array\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$triggerid of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Parameter \$type of class BytesCommerce\\Zabbix\\Actions\\Dto\\TriggerDto constructor expects int\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Dto/TriggerDto.php
+
+		-
+			message: '#^Class BytesCommerce\\Zabbix\\Dto\\UpdateSingleActionDto not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateActionDto.php
+
+		-
+			message: '#^Parameter \$actions of method BytesCommerce\\Zabbix\\Dto\\UpdateActionDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Dto\\UpdateSingleActionDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateActionDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Dto\\UpdateActionDto\:\:\$actions has unknown class BytesCommerce\\Zabbix\\Dto\\UpdateSingleActionDto as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateActionDto.php
+
+		-
+			message: '#^Class BytesCommerce\\Zabbix\\Zabbix\\Dto\\UpdateSingleItemDto not found\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateItemDto.php
+
+		-
+			message: '#^Parameter \$items of method BytesCommerce\\Zabbix\\Zabbix\\Dto\\UpdateItemDto\:\:__construct\(\) has invalid type BytesCommerce\\Zabbix\\Zabbix\\Dto\\UpdateSingleItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateItemDto.php
+
+		-
+			message: '#^Property BytesCommerce\\Zabbix\\Zabbix\\Dto\\UpdateItemDto\:\:\$items has unknown class BytesCommerce\\Zabbix\\Zabbix\\Dto\\UpdateSingleItemDto as its type\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Dto/UpdateItemDto.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetEventResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Event.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Actions\\History\:\:get\(\) should return list\<array\<string, mixed\>\> but returns array\<mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Actions/History.php
+
+		-
+			message: '#^Cannot access offset ''groups'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Host.php
+
+		-
+			message: '#^Cannot access offset ''host'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Host.php
+
+		-
+			message: '#^Cannot access offset ''hostid'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Host.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetHostResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Host.php
+
+		-
+			message: '#^Access to property \$itemIds on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\DeleteItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Access to property \$items on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\CreateItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Access to property \$items on an unknown class BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(BytesCommerce\\Zabbix\\Actions\\Dto\\CreateSingleItemDto\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \#1 \$callback of function array_map expects \(callable\(mixed\)\: mixed\)\|null, Closure\(BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateSingleItemDto\)\: array given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetItemResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \#2 \$array of function array_map expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 2
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \#2 \$params of method BytesCommerce\\Zabbix\\ZabbixClientInterface\:\:call\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Item\:\:create\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\CreateItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Item\:\:delete\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\DeleteItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Item\:\:get\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\GetItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Parameter \$dto of method BytesCommerce\\Zabbix\\Actions\\Item\:\:update\(\) has invalid type BytesCommerce\\Zabbix\\Actions\\Dto\\UpdateItemDto\.$#'
+			identifier: class.notFound
+			count: 1
+			path: src/Actions/Item.php
+
+		-
+			message: '#^Cannot access offset ''info'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Cannot cast mixed to string\.$#'
+			identifier: cast.string
+			count: 2
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Actions\\Trapper\:\:sendBatch\(\) should return array\{response\: string, info\: string, processed\?\: int, failed\?\: int, total\?\: int, seconds_spent\?\: float\} but returns array\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Actions\\Trapper\:\:sendToZabbix\(\) should return array but returns mixed\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Parameter \#1 \$info of method BytesCommerce\\Zabbix\\Actions\\Trapper\:\:parseInfoString\(\) expects string, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Parameter \#1 \.\.\.\$arrays of function array_merge expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Trapper.php
+
+		-
+			message: '#^Cannot access offset ''description'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Trigger.php
+
+		-
+			message: '#^Cannot access offset ''expression'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Trigger.php
+
+		-
+			message: '#^Cannot access offset ''triggerid'' on mixed\.$#'
+			identifier: offsetAccess.nonOffsetAccessible
+			count: 1
+			path: src/Actions/Trigger.php
+
+		-
+			message: '#^Parameter \#1 \$data of static method BytesCommerce\\Zabbix\\Actions\\Dto\\GetTriggerResponseDto\:\:fromArray\(\) expects array, mixed given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/Actions/Trigger.php
+
+		-
+			message: '#^Parameter \#2 \$value of method Symfony\\Component\\DependencyInjection\\Container\:\:setParameter\(\) expects array\|bool\|float\|int\|string\|UnitEnum\|null, mixed given\.$#'
+			identifier: argument.type
+			count: 5
+			path: src/DependencyInjection/ZabbixApiExtension.php
+
+		-
+			message: '#^Method BytesCommerce\\Zabbix\\Support\\ResponseValidator\:\:ensureArray\(\) should return array\<string, mixed\> but returns array\<mixed, mixed\>\.$#'
+			identifier: return.type
+			count: 1
+			path: src/Support/ResponseValidator.php
+
+		-
+			message: '#^Parameter \#1 \$error of static method BytesCommerce\\Zabbix\\Support\\ResponseValidator\:\:ensureErrorStructure\(\) expects array\<string, mixed\>, array\<mixed, mixed\> given\.$#'
+			identifier: argument.type
+			count: 1
+			path: src/ZabbixClient.php

@@ -1,0 +1,19 @@
+includes:
+    - phpstan-baseline.neon
+
+parameters:
+    level: max
+    paths:
+        - src
+
+    excludePaths:
+        analyseAndScan:
+            - src/Resources/*
+    
+    treatPhpDocTypesAsCertain: false
+
+    ignoreErrors:
+        - identifier: missingType.iterableValue
+        - identifier: return.unusedType
+        - identifier: staticMethod.void
+        - identifier: staticMethod.alreadyNarrowedType
