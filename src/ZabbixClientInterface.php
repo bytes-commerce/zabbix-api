@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix;
+namespace BytesCommerce\ZabbixApi;
 
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 interface ZabbixClientInterface
 {

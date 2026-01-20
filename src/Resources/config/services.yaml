@@ -3,16 +3,16 @@ services:
         autowire: true
         autoconfigure: true
 
-    BytesCommerce\Zabbix\ZabbixClientInterface:
-        class: BytesCommerce\Zabbix\ZabbixClient
+    BytesCommerce\ZabbixApi\ZabbixClientInterface:
+        class: BytesCommerce\ZabbixApi\ZabbixClient
         arguments:
             $cache: '@cache.app'
             $username: '%zabbix_api.username%'
             $password: '%zabbix_api.password%'
             $authTtl: '%zabbix_api.auth_ttl%'
 
-    BytesCommerce\Zabbix\ZabbixServiceInterface:
-        class: BytesCommerce\Zabbix\ZabbixService
+    BytesCommerce\ZabbixApi\ZabbixServiceInterface:
+        class: BytesCommerce\ZabbixApi\ZabbixService
 
-    BytesCommerce\Zabbix\ActionServiceInterface:
-        class: BytesCommerce\Zabbix\ActionService
+    BytesCommerce\ZabbixApi\ActionServiceInterface:
+        class: BytesCommerce\ZabbixApi\ActionService

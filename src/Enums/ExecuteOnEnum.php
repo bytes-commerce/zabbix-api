@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Zabbix;
+namespace BytesCommerce\ZabbixApi\Zabbix;
 
 enum ExecuteOnEnum: int
 {

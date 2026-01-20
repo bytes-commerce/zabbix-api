@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Enums;
+namespace BytesCommerce\ZabbixApi\Enums;
 
 enum StatusEnum: int
 {

@@ -2,20 +2,20 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Actions\Dto\CreateActionDto;
-use BytesCommerce\Zabbix\Actions\Dto\CreateActionResponseDto;
-use BytesCommerce\Zabbix\Actions\Dto\CreateSingleActionDto;
-use BytesCommerce\Zabbix\Actions\Dto\DeleteActionDto;
-use BytesCommerce\Zabbix\Actions\Dto\DeleteActionResponseDto;
-use BytesCommerce\Zabbix\Actions\Dto\GetActionResponseDto;
-use BytesCommerce\Zabbix\Actions\Dto\UpdateActionDto;
-use BytesCommerce\Zabbix\Actions\Dto\UpdateActionResponseDto;
-use BytesCommerce\Zabbix\Actions\Dto\UpdateSingleActionDto;
-use BytesCommerce\Zabbix\Actions\Dto\GetActionDto;
-use BytesCommerce\Zabbix\Enums\OutputEnum;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateActionResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateSingleActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\DeleteActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\DeleteActionResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetActionResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateActionResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateSingleActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetActionDto;
+use BytesCommerce\ZabbixApi\Enums\OutputEnum;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 final class Action extends AbstractAction
 {

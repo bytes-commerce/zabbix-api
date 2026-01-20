@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\ItemTypeEnum;
-use BytesCommerce\Zabbix\Enums\StatusEnum;
-use BytesCommerce\Zabbix\Enums\ValueTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\ItemTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\StatusEnum;
+use BytesCommerce\ZabbixApi\Enums\ValueTypeEnum;
 use Webmozart\Assert\Assert;
 
 final readonly class CreateSingleItemDto

@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\ConditionTypeEnum;
-use BytesCommerce\Zabbix\Enums\OperatorEnum;
+use BytesCommerce\ZabbixApi\Enums\ConditionTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\OperatorEnum;
 use Webmozart\Assert\Assert;
 
 final readonly class ConditionDto

@@ -12,12 +12,12 @@
     "minimum-stability": "stable",
     "autoload": {
         "psr-4": {
-            "BytesCommerce\\Zabbix\\": "src/"
+            "BytesCommerce\\ZabbixApi\\": "src/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "BytesCommerce\\Zabbix\\Tests\\": "tests/"
+            "BytesCommerce\\ZabbixApi\\Tests\\": "tests/"
         }
     },
     "require": {

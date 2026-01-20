@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Zabbix\AuditLog;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\AuditLog;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use DateTime;
 use PHPUnit\Framework\TestCase;
 

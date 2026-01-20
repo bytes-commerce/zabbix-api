@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Actions\Dto\GetAlertResponseDto;
-use BytesCommerce\Zabbix\Enums\OutputEnum;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetAlertResponseDto;
+use BytesCommerce\ZabbixApi\Enums\OutputEnum;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use DateTimeInterface;
 
 final class Alert extends AbstractAction

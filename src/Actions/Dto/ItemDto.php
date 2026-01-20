@@ -2,11 +2,11 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\StatusEnum;
-use BytesCommerce\Zabbix\Zabbix\ItemTypeEnum;
-use BytesCommerce\Zabbix\Zabbix\ValueTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\StatusEnum;
+use BytesCommerce\ZabbixApi\ItemTypeEnum;
+use BytesCommerce\ZabbixApi\ValueTypeEnum;
 
 final readonly class ItemDto
 {

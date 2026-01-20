@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\EventSourceEnum;
-use BytesCommerce\Zabbix\Enums\StatusEnum;
+use BytesCommerce\ZabbixApi\Enums\EventSourceEnum;
+use BytesCommerce\ZabbixApi\Enums\StatusEnum;
 use Webmozart\Assert\Assert;
 
 final readonly class CreateSingleActionDto

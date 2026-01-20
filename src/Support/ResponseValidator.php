@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Support;
+namespace BytesCommerce\ZabbixApi\Support;
 
-use BytesCommerce\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 use Webmozart\Assert\Assert;
 
 /**

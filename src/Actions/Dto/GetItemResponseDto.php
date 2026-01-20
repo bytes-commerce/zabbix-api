@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
 final readonly class GetItemResponseDto
 {

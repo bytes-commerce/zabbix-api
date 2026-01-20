@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\EvalTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\EvalTypeEnum;
 use Webmozart\Assert\Assert;
 
 final readonly class FilterDto

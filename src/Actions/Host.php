@@ -2,12 +2,12 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Actions\Dto\GetHostResponseDto;
-use BytesCommerce\Zabbix\Enums\OutputEnum;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
-use BytesCommerce\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetHostResponseDto;
+use BytesCommerce\ZabbixApi\Enums\OutputEnum;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 
 final class Host extends AbstractAction
 {

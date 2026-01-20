@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests\Unit\Zabbix;
 
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixApiException;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixClient;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixClient;
 use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;

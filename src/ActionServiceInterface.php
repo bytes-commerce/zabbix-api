@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix;
+namespace BytesCommerce\ZabbixApi;
 
 interface ActionServiceInterface
 {

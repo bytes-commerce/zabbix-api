@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions\Dto;
+namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\Zabbix\Enums\StatusEnum;
+use BytesCommerce\ZabbixApi\Enums\StatusEnum;
 
 final readonly class TriggerDto
 {

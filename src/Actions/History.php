@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Enums\HistoryTypeEnum;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Enums\HistoryTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 final class History extends AbstractAction
 {

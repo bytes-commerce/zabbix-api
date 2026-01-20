@@ -35,9 +35,9 @@ ZABBIX_AUTH_TTL=3600  # Optional: cache TTL in seconds
 ### 2. Use Actions (Recommended)
 
 ```php
-use BytesCommerce\Zabbix\ZabbixServiceInterface;
-use BytesCommerce\Zabbix\Actions\History;
-use BytesCommerce\Zabbix\Enums\HistoryTypeEnum;
+use BytesCommerce\ZabbixApi\ZabbixServiceInterface;
+use BytesCommerce\ZabbixApi\Actions\History;
+use BytesCommerce\ZabbixApi\Enums\HistoryTypeEnum;
 
 class MonitoringController
 {
@@ -105,8 +105,8 @@ $data = $history->getLatest(['12345']); // Auto-authenticates if needed
 ### History Data Retrieval
 
 ```php
-use BytesCommerce\Zabbix\Actions\History;
-use BytesCommerce\Zabbix\Enums\HistoryTypeEnum;
+use BytesCommerce\ZabbixApi\Actions\History;
+use BytesCommerce\ZabbixApi\Enums\HistoryTypeEnum;
 
 $history = $zabbix->action(History::class);
 
@@ -146,7 +146,7 @@ $recent = $history->getLast24Hours(
 ### Host Management
 
 ```php
-use BytesCommerce\Zabbix\Actions\Host;
+use BytesCommerce\ZabbixApi\Actions\Host;
 
 $host = $zabbix->action(Host::class);
 
@@ -184,8 +184,8 @@ $host->delete(['10084', '10085']);
 ### Item Operations
 
 ```php
-use BytesCommerce\Zabbix\Actions\Item;
-use BytesCommerce\Zabbix\Actions\Dto\GetItemDto;
+use BytesCommerce\ZabbixApi\Actions\Item;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetItemDto;
 
 $item = $zabbix->action(Item::class);
 
@@ -216,7 +216,7 @@ $item->create($createDto);
 While automatic, you can manually trigger login if needed:
 
 ```php
-use BytesCommerce\Zabbix\Actions\User;
+use BytesCommerce\ZabbixApi\Actions\User;
 
 $user = $zabbix->action(User::class);
 $token = $user->login('username', 'password');
@@ -230,8 +230,8 @@ $token = $user->login('username', 'password');
 For dynamic method calls:
 
 ```php
-use BytesCommerce\Zabbix\ActionServiceInterface;
-use BytesCommerce\Zabbix\Actions\History;
+use BytesCommerce\ZabbixApi\ActionServiceInterface;
+use BytesCommerce\ZabbixApi\Actions\History;
 
 public function __construct(
     private readonly ActionServiceInterface $actionService
@@ -255,8 +255,8 @@ public function dynamicCall(): mixed
 For raw API calls:
 
 ```php
-use BytesCommerce\Zabbix\ZabbixClientInterface;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 public function __construct(
     private readonly ZabbixClientInterface $client
@@ -276,7 +276,7 @@ public function rawCall(): mixed
 All errors throw `ZabbixApiException` with context:
 
 ```php
-use BytesCommerce\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 
 try {
     $result = $history->get(['10084']);
@@ -332,8 +332,8 @@ Extend `AbstractAction` and implement `getActionPrefix()`:
 ```php
 namespace App\Zabbix\Actions;
 
-use BytesCommerce\Zabbix\Actions\AbstractAction;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Actions\AbstractAction;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 final class CustomAction extends AbstractAction
 {

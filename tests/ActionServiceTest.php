@@ -2,13 +2,13 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Tests;
+namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\Zabbix\Actions\Item;
-use BytesCommerce\Zabbix\ActionService;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
-use BytesCommerce\Zabbix\ZabbixApiException;
-use BytesCommerce\Zabbix\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\Actions\Item;
+use BytesCommerce\ZabbixApi\ActionService;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ActionServiceTest extends TestCase

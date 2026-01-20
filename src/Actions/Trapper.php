@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Enums\RequestEnum;
-use BytesCommerce\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\Enums\RequestEnum;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 
 final class Trapper
 {

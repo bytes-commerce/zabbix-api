@@ -4,9 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Zabbix\Trigger;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixApiException;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\Trigger;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
 
 final class TriggerTest extends TestCase

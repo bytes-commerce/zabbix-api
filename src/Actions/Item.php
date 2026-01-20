@@ -2,17 +2,17 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\Actions\Dto\CreateItemDto;
-use BytesCommerce\Zabbix\Actions\Dto\CreateSingleItemDto;
-use BytesCommerce\Zabbix\Actions\Dto\DeleteItemDto;
-use BytesCommerce\Zabbix\Actions\Dto\GetItemDto;
-use BytesCommerce\Zabbix\Actions\Dto\GetItemResponseDto;
-use BytesCommerce\Zabbix\Actions\Dto\UpdateItemDto;
-use BytesCommerce\Zabbix\Actions\Dto\UpdateSingleItemDto;
-use BytesCommerce\Zabbix\Enums\OutputEnum;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateItemDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateSingleItemDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\DeleteItemDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetItemDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetItemResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateItemDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateSingleItemDto;
+use BytesCommerce\ZabbixApi\Enums\OutputEnum;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 final class Item extends AbstractAction
 {

@@ -6,8 +6,8 @@ namespace BytesCommerce\ZabbixApi\Tests;
 
 use BytesCommerce\ZabbixApi\Actions\Action;
 use BytesCommerce\ZabbixApi\Actions\Dto\GetActionResponseDto;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixApiException;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
 
 final class ActionTest extends TestCase

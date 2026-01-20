@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests\Integration;
 
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixClientInterface;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixServiceInterface;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\ZabbixServiceInterface;
 use BytesCommerce\ZabbixApi\ZabbixApiBundle;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\DependencyInjection\ContainerBuilder;

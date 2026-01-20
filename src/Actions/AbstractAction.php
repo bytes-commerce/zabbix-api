@@ -2,9 +2,9 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix\Actions;
+namespace BytesCommerce\ZabbixApi\Actions;
 
-use BytesCommerce\Zabbix\ZabbixClientInterface;
+use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 
 abstract class AbstractAction
 {

@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests\Unit\Zabbix;
 
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 use PHPUnit\Framework\TestCase;
 
 final class ZabbixApiExceptionTest extends TestCase

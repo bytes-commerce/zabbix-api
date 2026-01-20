@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix;
+namespace BytesCommerce\ZabbixApi;
 
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
-use BytesCommerce\Zabbix\Support\ResponseValidator;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Support\ResponseValidator;
 use Psr\Log\LoggerInterface;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\Cache\ItemInterface;

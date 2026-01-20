@@ -2,10 +2,10 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\Zabbix;
+namespace BytesCommerce\ZabbixApi;
 
-use BytesCommerce\Zabbix\Actions\AbstractAction;
-use BytesCommerce\Zabbix\Enums\ZabbixAction;
+use BytesCommerce\ZabbixApi\Actions\AbstractAction;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 
 final readonly class ActionService implements ActionServiceInterface
 {

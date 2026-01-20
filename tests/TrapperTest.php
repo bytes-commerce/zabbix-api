@@ -4,8 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Zabbix\Trapper;
-use BytesCommerce\ZabbixApi\Zabbix\ZabbixApiException;
+use BytesCommerce\ZabbixApi\Trapper;
+use BytesCommerce\ZabbixApi\ZabbixApiException;
 use PHPUnit\Framework\TestCase;
 
 final class TrapperTest extends TestCase
