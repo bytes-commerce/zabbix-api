@@ -94,6 +94,7 @@ Each action represents a Zabbix API namespace:
 | `History` | `history` | `get()`, `getLast24Hours()`, `getLatest()` |
 | `Host` | `host` | `get()`, `create()`, `update()`, `delete()` |
 | `HostGroup` | `hostgroup` | `get()`, `create()`, `update()`, `delete()`, `exists()`, `getObjects()`, `isReadable()`, `isWritable()`, `massAdd()`, `massRemove()`, `massUpdate()` |
+| `Dashboard` | `dashboard` | `get()`, `create()`, `update()`, `delete()` |
 | `Item` | `item` | `get()`, `create()`, `update()`, `delete()` |
 | `User` | `user` | `login()` |
 
@@ -306,6 +307,58 @@ $massUpdateDto = new MassUpdateHostGroupDto(
 $result = $hostGroup->massUpdate($massUpdateDto);
 ```
 
+### Dashboard Management
+
+```php
+use BytesCommerce\ZabbixApi\Actions\Dashboard;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetDashboardDto;
+
+$dashboard = $zabbix->action(Dashboard::class);
+
+// Get dashboards with DTO
+$dto = new GetDashboardDto(
+    dashboardids: ['15'],
+    filter: null,
+    output: 'extend',
+    selectPages: true,
+    selectUsers: true,
+    selectUserGroups: null,
+    sortfield: null,
+    sortorder: null,
+    limit: null,
+    preservekeys: null,
+);
+$dashboards = $dashboard->get($dto)->dashboards;
+
+// Create dashboard
+$createDto = new CreateDashboardDto([
+    [
+        'name' => 'Production Dashboard',
+        'pages' => [
+            [
+                'name' => 'Overview',
+                'widgets' => [],
+            ],
+        ],
+    ],
+]);
+$result = $dashboard->create($createDto);
+echo "Created dashboard IDs: " . implode(', ', $result->dashboardids);
+
+// Update dashboard
+$updateDto = new UpdateDashboardDto([
+    [
+        'dashboardid' => '15',
+        'name' => 'Updated Dashboard',
+    ],
+]);
+$result = $dashboard->update($updateDto);
+
+// Delete dashboards
+$deleteDto = new DeleteDashboardDto(['15', '16']);
+$dashboard->delete($deleteDto);
+```
+
 ### Item Operations
 
 ```php
@@ -500,7 +553,7 @@ docker compose exec php bash -c "vendor/bin/phpstan analyse --level=max src"
 
 - **ZabbixService**: Factory for action instantiation
 - **ZabbixClient**: Low-level HTTP client with auth management
-- **Actions**: Self-contained API modules (Host, HostGroup, Item, History, Graph, Trigger, etc.)
+- **Actions**: Self-contained API modules (Host, HostGroup, Dashboard, Item, History, Graph, Trigger, etc.)
 - **Enums**: Type-safe constants (HistoryTypeEnum, ZabbixAction, etc.)
 - **DTOs**: Structured request/response objects
 
