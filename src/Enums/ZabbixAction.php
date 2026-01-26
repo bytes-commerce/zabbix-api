@@ -37,4 +37,15 @@ enum ZabbixAction: string
     case GRAPH_CREATE = 'graph.create';
     case GRAPH_UPDATE = 'graph.update';
     case GRAPH_DELETE = 'graph.delete';
+    case HOSTGROUP_GET = 'hostgroup.get';
+    case HOSTGROUP_CREATE = 'hostgroup.create';
+    case HOSTGROUP_UPDATE = 'hostgroup.update';
+    case HOSTGROUP_DELETE = 'hostgroup.delete';
+    case HOSTGROUP_EXISTS = 'hostgroup.exists';
+    case HOSTGROUP_GETOBJECTS = 'hostgroup.getobjects';
+    case HOSTGROUP_ISREADABLE = 'hostgroup.isreadable';
+    case HOSTGROUP_ISWRITABLE = 'hostgroup.iswritable';
+    case HOSTGROUP_MASSADD = 'hostgroup.massadd';
+    case HOSTGROUP_MASSREMOVE = 'hostgroup.massremove';
+    case HOSTGROUP_MASSUPDATE = 'hostgroup.massupdate';
 }
