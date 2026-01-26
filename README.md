@@ -4,12 +4,13 @@ Modern Symfony bundle for Zabbix API integration with persistent authentication,
 
 ## Features
 
-✨ **Persistent Session Management** - Automatic token caching with retry-on-failure  
-🏭 **Factory Pattern** - Type-safe action instantiation  
-📊 **History Data Retrieval** - Query monitoring data with type-specific methods  
-🔒 **Self-Contained Actions** - No globals, clean architecture  
-🎯 **PHP 8.3+ Ready** - Full strict typing, readonly properties, enums  
+✨ **Persistent Session Management** - Automatic token caching with retry-on-failure
+🏭 **Factory Pattern** - Type-safe action instantiation
+📊 **History Data Retrieval** - Query monitoring data with type-specific methods
+🔒 **Self-Contained Actions** - No globals, clean architecture
+🎯 **PHP 8.3+ Ready** - Full strict typing, readonly properties, enums
 ⚡ **Zero Configuration** - Works out of the box with environment variables
+📦 **Complete API Coverage** - Host, HostGroup, Item, History, Graph, Trigger, and more
 
 ## Installation
 
@@ -37,6 +38,8 @@ ZABBIX_AUTH_TTL=3600  # Optional: cache TTL in seconds
 ```php
 use BytesCommerce\ZabbixApi\ZabbixServiceInterface;
 use BytesCommerce\ZabbixApi\Actions\History;
+use BytesCommerce\ZabbixApi\Actions\HostGroup;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetHostGroupDto;
 use BytesCommerce\ZabbixApi\Enums\HistoryTypeEnum;
 
 class MonitoringController
@@ -57,6 +60,26 @@ class MonitoringController
             limit: 100
         );
     }
+
+    public function getHostGroups(): array
+    {
+        // Get all host groups
+        $hostGroup = $this->zabbix->action(HostGroup::class);
+        $dto = new GetHostGroupDto(
+            groupids: null,
+            hostids: null,
+            filter: null,
+            output: 'extend',
+            selectHosts: true,
+            selectTemplates: null,
+            sortfield: null,
+            sortorder: null,
+            limit: null,
+            preservekeys: null,
+        );
+
+        return $hostGroup->get($dto)->hostGroups;
+    }
 }
 ```
 
@@ -70,6 +93,7 @@ Each action represents a Zabbix API namespace:
 |-------------|------------|------------------|
 | `History` | `history` | `get()`, `getLast24Hours()`, `getLatest()` |
 | `Host` | `host` | `get()`, `create()`, `update()`, `delete()` |
+| `HostGroup` | `hostgroup` | `get()`, `create()`, `update()`, `delete()`, `exists()`, `getObjects()`, `isReadable()`, `isWritable()`, `massAdd()`, `massRemove()`, `massUpdate()` |
 | `Item` | `item` | `get()`, `create()`, `update()`, `delete()` |
 | `User` | `user` | `login()` |
 
@@ -179,6 +203,107 @@ $host->update([[
 
 // Delete hosts
 $host->delete(['10084', '10085']);
+```
+
+### HostGroup Management
+
+```php
+use BytesCommerce\ZabbixApi\Actions\HostGroup;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetHostGroupDto;
+
+$hostGroup = $zabbix->action(HostGroup::class);
+
+// Get host groups with DTO
+$dto = new GetHostGroupDto(
+    groupids: ['15'],
+    hostids: null,
+    filter: null,
+    output: 'extend',
+    selectHosts: true,
+    selectTemplates: null,
+    sortfield: null,
+    sortorder: null,
+    limit: null,
+    preservekeys: null,
+);
+$groups = $hostGroup->get($dto)->hostGroups;
+
+// Create host group
+$createDto = new CreateHostGroupDto([
+    ['name' => 'Linux Servers'],
+    ['name' => 'Windows Servers'],
+]);
+$result = $hostGroup->create($createDto);
+echo "Created group IDs: " . implode(', ', $result->groupids);
+
+// Update host group
+$updateDto = new UpdateHostGroupDto([
+    [
+        'groupid' => '15',
+        'name' => 'Linux Production Servers',
+    ],
+]);
+$result = $hostGroup->update($updateDto);
+
+// Delete host groups
+$deleteDto = new DeleteHostGroupDto(['15', '16']);
+$hostGroup->delete($deleteDto);
+
+// Check if host group exists
+$existsDto = new ExistsHostGroupDto(
+    groupids: ['15'],
+    hostids: null,
+    filter: null,
+    name: null,
+);
+$exists = $hostGroup->exists($existsDto)->exists;
+
+// Get host groups by filters
+$getObjectsDto = new GetObjectsHostGroupDto(
+    groupids: null,
+    hostids: null,
+    filter: ['name' => 'Linux'],
+    name: null,
+);
+$groups = $hostGroup->getObjects($getObjectsDto)->hostGroups;
+
+// Check if host groups are readable
+$isReadableDto = new IsReadableHostGroupDto(
+    groupids: ['15'],
+    hostids: null,
+);
+$isReadable = $hostGroup->isReadable($isReadableDto)->isReadable;
+
+// Check if host groups are writable
+$isWritableDto = new IsWritableHostGroupDto(
+    groupids: ['15'],
+    hostids: null,
+);
+$isWritable = $hostGroup->isWritable($isWritableDto)->isWritable;
+
+// Mass add hosts to host groups
+$massAddDto = new MassAddHostGroupDto(
+    groups: ['15'],
+    hosts: ['10084', '10085'],
+    templates: null,
+);
+$result = $hostGroup->massAdd($massAddDto);
+
+// Mass remove hosts from host groups
+$massRemoveDto = new MassRemoveHostGroupDto(
+    groupids: ['15'],
+    hostids: ['10084'],
+    templateids: null,
+);
+$result = $hostGroup->massRemove($massRemoveDto);
+
+// Mass update host groups
+$massUpdateDto = new MassUpdateHostGroupDto(
+    groups: ['15'],
+    hosts: ['10084', '10085'],
+    templates: null,
+);
+$result = $hostGroup->massUpdate($massUpdateDto);
 ```
 
 ### Item Operations
@@ -375,7 +500,7 @@ docker compose exec php bash -c "vendor/bin/phpstan analyse --level=max src"
 
 - **ZabbixService**: Factory for action instantiation
 - **ZabbixClient**: Low-level HTTP client with auth management
-- **Actions**: Self-contained API modules (Host, Item, History, etc.)
+- **Actions**: Self-contained API modules (Host, HostGroup, Item, History, Graph, Trigger, etc.)
 - **Enums**: Type-safe constants (HistoryTypeEnum, ZabbixAction, etc.)
 - **DTOs**: Structured request/response objects
 
