@@ -8,6 +8,7 @@ enum ZabbixAction: string
 {
     case USER_LOGIN = 'user.login';
     case HISTORY_GET = 'history.get';
+    case HISTORY_PUSH = 'history.push';
     case ACTION_GET = 'action.get';
     case ACTION_CREATE = 'action.create';
     case ACTION_UPDATE = 'action.update';
@@ -32,4 +33,8 @@ enum ZabbixAction: string
     case ALERT_GET = 'alert.get';
     case AUDITLOG_GET = 'auditlog.get';
     case APPINFO_VERSION = 'appinfo.version';
+    case GRAPH_GET = 'graph.get';
+    case GRAPH_CREATE = 'graph.create';
+    case GRAPH_UPDATE = 'graph.update';
+    case GRAPH_DELETE = 'graph.delete';
 }
