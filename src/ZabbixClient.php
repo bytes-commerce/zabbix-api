@@ -29,6 +29,7 @@ final class ZabbixClient implements ZabbixClientInterface
     public function __construct(
         private readonly ?string $username,
         private readonly ?string $password,
+        private readonly ?string $apiToken,
         private readonly HttpClientInterface $httpClient,
         private readonly LoggerInterface $logger,
         private readonly CacheInterface $cache,
@@ -47,9 +48,7 @@ final class ZabbixClient implements ZabbixClientInterface
         $authToken = $this->getAuthToken();
 
         try {
-            $result = $this->executeApiCall($action, $params, $authToken);
-
-            return $result;
+            return $this->executeApiCall($action, $params, $authToken);
         } catch (ZabbixApiException $e) {
             if ($this->isAuthFailure($e)) {
                 $this->logger->info('Authentication failure detected, retrying with fresh token', [
@@ -69,20 +68,48 @@ final class ZabbixClient implements ZabbixClientInterface
 
     private function getAuthToken(): ?string
     {
-        $token = $this->cache->get(self::CACHE_KEY, function (ItemInterface $item): ?string {
-            $item->expiresAfter(null);
+        // If an API token is configured, use it directly (no caching needed)
+        if ($this->apiToken !== null && $this->apiToken !== '') {
+            return $this->apiToken;
+        }
+
+        $authTtl = $this->authTtl;
+
+        $token = $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($authTtl): ?string {
+            $item->expiresAfter($authTtl);
 
             if ($this->username === null || $this->password === null) {
                 return null;
             }
 
-            return $this->performLogin();
+            return $this->doLogin();
         });
 
         return $token === '' ? null : $token;
     }
 
     private function performLogin(): string
+    {
+        $token = $this->doLogin();
+
+        // Delete stale entry and re-store with proper TTL
+        $this->cache->delete(self::CACHE_KEY);
+        $authTtl = $this->authTtl;
+        $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($token, $authTtl): string {
+            $item->expiresAfter($authTtl);
+
+            return $token;
+        });
+
+        $this->logger->info('Zabbix authentication successful', [
+            'username' => $this->username,
+            'ttl' => $this->authTtl,
+        ]);
+
+        return $token;
+    }
+
+    private function doLogin(): string
     {
         if ($this->username === null || $this->password === null) {
             throw new ZabbixApiException(
@@ -102,17 +129,6 @@ final class ZabbixClient implements ZabbixClientInterface
         if (!is_string($result)) {
             throw new ZabbixApiException('Invalid login response: expected string token', -1);
         }
-
-        $this->cache->get(self::CACHE_KEY, function (ItemInterface $item) use ($result): string {
-            $item->expiresAfter($this->authTtl);
-
-            return $result;
-        });
-
-        $this->logger->info('Zabbix authentication successful', [
-            'username' => $this->username,
-            'ttl' => $this->authTtl,
-        ]);
 
         return $result;
     }

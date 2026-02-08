@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Event;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetEventResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Event;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -29,12 +31,12 @@ final class EventTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('event.get', $expectedParams)
+            ->with(ZabbixAction::EVENT_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->event->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetEventResponseDto::class, $result);
     }
 
     public function testGetWithCustomOutput(): void
@@ -42,18 +44,18 @@ final class EventTest extends TestCase
         $params = [
             'output' => ['eventid', 'clock', 'value'],
             'selectHosts' => ['hostid', 'name'],
-            'source' => Event::SOURCE_TRIGGER
+            'source' => Event::SOURCE_TRIGGER,
         ];
         $expectedResult = [['eventid' => '1', 'clock' => '1672531200', 'value' => 1]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('event.get', $params)
+            ->with(ZabbixAction::EVENT_GET, $params)
             ->willReturn($expectedResult);
 
         $result = $this->event->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetEventResponseDto::class, $result);
     }
 
     public function testAcknowledgeValid(): void
@@ -62,13 +64,13 @@ final class EventTest extends TestCase
             'eventids' => ['20415', '20416'],
             'action' => Event::ACTION_ACKNOWLEDGE | Event::ACTION_MESSAGE,
             'message' => 'Problem is being investigated and acknowledged.',
-            'severity' => 4
+            'severity' => 4,
         ];
         $expectedResult = ['eventids' => ['20415', '20416']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('event.acknowledge', $params)
+            ->with(ZabbixAction::EVENT_ACKNOWLEDGE, $params)
             ->willReturn($expectedResult);
 
         $result = $this->event->acknowledge($params);
@@ -80,7 +82,7 @@ final class EventTest extends TestCase
     {
         $params = [
             'action' => Event::ACTION_ACKNOWLEDGE,
-            'message' => 'Test message'
+            'message' => 'Test message',
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -93,7 +95,7 @@ final class EventTest extends TestCase
     {
         $params = [
             'eventids' => '20415',
-            'action' => Event::ACTION_ACKNOWLEDGE
+            'action' => Event::ACTION_ACKNOWLEDGE,
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -106,7 +108,7 @@ final class EventTest extends TestCase
     {
         $params = [
             'eventids' => ['20415'],
-            'message' => 'Test message'
+            'message' => 'Test message',
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -119,7 +121,7 @@ final class EventTest extends TestCase
     {
         $params = [
             'eventids' => ['20415'],
-            'action' => 'acknowledge'
+            'action' => 'acknowledge',
         ];
 
         $this->expectException(ZabbixApiException::class);

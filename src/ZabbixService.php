@@ -35,7 +35,7 @@ final readonly class ZabbixService implements ZabbixServiceInterface
 
     public function getApiVersion(): string
     {
-        $result = $this->zabbixClient->call(ZabbixAction::APPINFO_VERSION, []);
+        $result = $this->zabbixClient->call(ZabbixAction::APIINFO_VERSION, []);
 
         if (!is_string($result)) {
             throw new ZabbixApiException('Invalid API version response', -1);

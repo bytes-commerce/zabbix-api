@@ -4,12 +4,17 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests\Integration;
 
+use BytesCommerce\ZabbixApi\ActionServiceInterface;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use BytesCommerce\ZabbixApi\ZabbixServiceInterface;
 use BytesCommerce\ZabbixApi\ZabbixApiBundle;
 use PHPUnit\Framework\TestCase;
+use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Component\DependencyInjection\Definition;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
+use Symfony\Contracts\Cache\CacheInterface;
+use Symfony\Contracts\HttpClient\HttpClientInterface;
 
 final class ZabbixApiBundleTest extends TestCase
 {
@@ -20,21 +25,102 @@ final class ZabbixApiBundleTest extends TestCase
             'kernel.environment' => 'test',
         ]));
 
+        // Register required framework services as synthetic
+        $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
+        $container->setDefinition(LoggerInterface::class, (new Definition(LoggerInterface::class))->setSynthetic(true));
+        $container->setDefinition('cache.app', (new Definition(CacheInterface::class))->setSynthetic(true));
+
+        // Set autowiring aliases so the container can resolve typed parameters
+        $container->setAlias(HttpClientInterface::class, 'http_client')->setPublic(false);
+        $container->setAlias(CacheInterface::class, 'cache.app')->setPublic(false);
+
         $bundle = new ZabbixApiBundle();
         $bundle->build($container);
 
         $extension = $bundle->getContainerExtension();
-        $extension->load([], $container);
+        self::assertNotNull($extension);
+
+        $extension->load([
+            [
+                'base_uri' => 'https://zabbix.test/api_jsonrpc.php',
+                'username' => 'admin',
+                'password' => 'secret',
+            ],
+        ], $container);
+
+        // Make services public so we can verify they exist after compilation
+        $container->getDefinition(ZabbixClientInterface::class)->setPublic(true);
+        $container->getDefinition(ZabbixServiceInterface::class)->setPublic(true);
+        $container->getDefinition(ActionServiceInterface::class)->setPublic(true);
 
         $container->compile();
 
         self::assertTrue($container->has(ZabbixClientInterface::class));
         self::assertTrue($container->has(ZabbixServiceInterface::class));
+        self::assertTrue($container->has(ActionServiceInterface::class));
+    }
 
-        $client = $container->get(ZabbixClientInterface::class);
-        self::assertInstanceOf(ZabbixClientInterface::class, $client);
+    public function testParametersAreSet(): void
+    {
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.environment' => 'test',
+        ]));
 
-        $service = $container->get(ZabbixServiceInterface::class);
-        self::assertInstanceOf(ZabbixServiceInterface::class, $service);
+        $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
+        $container->setDefinition(LoggerInterface::class, (new Definition(LoggerInterface::class))->setSynthetic(true));
+        $container->setDefinition('cache.app', (new Definition(CacheInterface::class))->setSynthetic(true));
+        $container->setAlias(HttpClientInterface::class, 'http_client')->setPublic(false);
+        $container->setAlias(CacheInterface::class, 'cache.app')->setPublic(false);
+
+        $bundle = new ZabbixApiBundle();
+        $bundle->build($container);
+
+        $extension = $bundle->getContainerExtension();
+        self::assertNotNull($extension);
+
+        $extension->load([
+            [
+                'base_uri' => 'https://zabbix.test/api_jsonrpc.php',
+                'username' => 'monitoring',
+                'password' => 'pass123',
+                'auth_ttl' => 7200,
+            ],
+        ], $container);
+
+        self::assertSame('https://zabbix.test/api_jsonrpc.php', $container->getParameter('zabbix_api.base_uri'));
+        self::assertSame('monitoring', $container->getParameter('zabbix_api.username'));
+        self::assertSame('pass123', $container->getParameter('zabbix_api.password'));
+        self::assertSame(7200, $container->getParameter('zabbix_api.auth_ttl'));
+        self::assertNull($container->getParameter('zabbix_api.api_token'));
+    }
+
+    public function testDefaultConfigValues(): void
+    {
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.environment' => 'test',
+        ]));
+
+        $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
+        $container->setDefinition(LoggerInterface::class, (new Definition(LoggerInterface::class))->setSynthetic(true));
+        $container->setDefinition('cache.app', (new Definition(CacheInterface::class))->setSynthetic(true));
+        $container->setAlias(HttpClientInterface::class, 'http_client')->setPublic(false);
+        $container->setAlias(CacheInterface::class, 'cache.app')->setPublic(false);
+
+        $bundle = new ZabbixApiBundle();
+        $bundle->build($container);
+
+        $extension = $bundle->getContainerExtension();
+        self::assertNotNull($extension);
+
+        $extension->load([
+            ['base_uri' => 'https://zabbix.test/api_jsonrpc.php'],
+        ], $container);
+
+        self::assertNull($container->getParameter('zabbix_api.username'));
+        self::assertNull($container->getParameter('zabbix_api.password'));
+        self::assertNull($container->getParameter('zabbix_api.api_token'));
+        self::assertSame(3600, $container->getParameter('zabbix_api.auth_ttl'));
     }
 }

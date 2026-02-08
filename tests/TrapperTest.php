@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Trapper;
+use BytesCommerce\ZabbixApi\Actions\Trapper;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use PHPUnit\Framework\TestCase;
 

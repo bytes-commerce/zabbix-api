@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Host;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetHostResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Host;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -29,12 +31,12 @@ final class HostTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.get', $expectedParams)
+            ->with(ZabbixAction::HOST_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->host->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetHostResponseDto::class, $result);
     }
 
     public function testGetWithCustomOutput(): void
@@ -42,18 +44,18 @@ final class HostTest extends TestCase
         $params = [
             'output' => ['hostid', 'host', 'name'],
             'selectInterfaces' => 'extend',
-            'selectGroups' => 'extend'
+            'selectGroups' => 'extend',
         ];
         $expectedResult = [['hostid' => '1', 'host' => 'Test Host', 'name' => 'Test Host Display']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.get', $params)
+            ->with(ZabbixAction::HOST_GET, $params)
             ->willReturn($expectedResult);
 
         $result = $this->host->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetHostResponseDto::class, $result);
     }
 
     public function testCreateValid(): void
@@ -69,17 +71,17 @@ final class HostTest extends TestCase
                         'useip' => 1,
                         'ip' => '192.168.1.100',
                         'dns' => '',
-                        'port' => '10050'
-                    ]
+                        'port' => '10050',
+                    ],
                 ],
-                'templates' => [['templateid' => '10001']]
-            ]
+                'templates' => [['templateid' => '10001']],
+            ],
         ];
         $expectedResult = ['hostids' => ['10105']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.create', $hosts)
+            ->with(ZabbixAction::HOST_CREATE, $hosts)
             ->willReturn($expectedResult);
 
         $result = $this->host->create($hosts);
@@ -91,8 +93,8 @@ final class HostTest extends TestCase
     {
         $hosts = [
             [
-                'groups' => [['groupid' => '2']]
-            ]
+                'groups' => [['groupid' => '2']],
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -105,8 +107,8 @@ final class HostTest extends TestCase
     {
         $hosts = [
             [
-                'host' => 'Linux-Server-01'
-            ]
+                'host' => 'Linux-Server-01',
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -120,8 +122,8 @@ final class HostTest extends TestCase
         $hosts = [
             [
                 'host' => 'Linux-Server-01',
-                'groups' => 'invalid'
-            ]
+                'groups' => 'invalid',
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -135,14 +137,14 @@ final class HostTest extends TestCase
         $hosts = [
             [
                 'hostid' => '10105',
-                'status' => 1
-            ]
+                'status' => 1,
+            ],
         ];
         $expectedResult = ['hostids' => ['10105']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.update', $hosts)
+            ->with(ZabbixAction::HOST_UPDATE, $hosts)
             ->willReturn($expectedResult);
 
         $result = $this->host->update($hosts);
@@ -154,8 +156,8 @@ final class HostTest extends TestCase
     {
         $hosts = [
             [
-                'status' => 1
-            ]
+                'status' => 1,
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -171,7 +173,7 @@ final class HostTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.delete', $hostIds)
+            ->with(ZabbixAction::HOST_DELETE, $hostIds)
             ->willReturn($expectedResult);
 
         $result = $this->host->delete($hostIds);
@@ -183,13 +185,13 @@ final class HostTest extends TestCase
     {
         $params = [
             'hosts' => [['hostid' => '10105'], ['hostid' => '10106']],
-            'templates' => [['templateid' => '10001']]
+            'templates' => [['templateid' => '10001']],
         ];
         $expectedResult = ['hostids' => ['10105', '10106']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.massadd', $params)
+            ->with(ZabbixAction::HOST_MASSADD, $params)
             ->willReturn($expectedResult);
 
         $result = $this->host->massAdd($params);
@@ -200,7 +202,7 @@ final class HostTest extends TestCase
     public function testMassAddInvalidMissingHosts(): void
     {
         $params = [
-            'templates' => [['templateid' => '10001']]
+            'templates' => [['templateid' => '10001']],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -213,13 +215,13 @@ final class HostTest extends TestCase
     {
         $params = [
             'hosts' => [['hostid' => '10105'], ['hostid' => '10106']],
-            'status' => 1
+            'status' => 1,
         ];
         $expectedResult = ['hostids' => ['10105', '10106']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.massupdate', $params)
+            ->with(ZabbixAction::HOST_MASSUPDATE, $params)
             ->willReturn($expectedResult);
 
         $result = $this->host->massUpdate($params);
@@ -230,7 +232,7 @@ final class HostTest extends TestCase
     public function testMassUpdateInvalidMissingHosts(): void
     {
         $params = [
-            'status' => 1
+            'status' => 1,
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -243,13 +245,13 @@ final class HostTest extends TestCase
     {
         $params = [
             'hostids' => ['10105', '10106'],
-            'templateids' => ['10001']
+            'templateids' => ['10001'],
         ];
         $expectedResult = ['hostids' => ['10105', '10106']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('host.massremove', $params)
+            ->with(ZabbixAction::HOST_MASSREMOVE, $params)
             ->willReturn($expectedResult);
 
         $result = $this->host->massRemove($params);
@@ -260,7 +262,7 @@ final class HostTest extends TestCase
     public function testMassRemoveInvalidMissingHostIds(): void
     {
         $params = [
-            'templateids' => ['10001']
+            'templateids' => ['10001'],
         ];
 
         $this->expectException(ZabbixApiException::class);

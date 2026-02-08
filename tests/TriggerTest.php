@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Trigger;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetTriggerResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Trigger;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -29,12 +31,12 @@ final class TriggerTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.get', $expectedParams)
+            ->with(ZabbixAction::TRIGGER_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetTriggerResponseDto::class, $result);
     }
 
     public function testGetWithCustomOutput(): void
@@ -44,12 +46,12 @@ final class TriggerTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.get', $params)
+            ->with(ZabbixAction::TRIGGER_GET, $params)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetTriggerResponseDto::class, $result);
     }
 
     public function testCreateValid(): void
@@ -60,14 +62,14 @@ final class TriggerTest extends TestCase
                 'expression' => 'last(/Linux server/system.cpu.load[percpu,avg1])>5',
                 'priority' => 4,
                 'dependencies' => [['triggerid' => '17367']],
-                'tags' => [['tag' => 'service', 'value' => 'cpu']]
-            ]
+                'tags' => [['tag' => 'service', 'value' => 'cpu']],
+            ],
         ];
         $expectedResult = ['triggerids' => ['13938']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.create', $triggers)
+            ->with(ZabbixAction::TRIGGER_CREATE, $triggers)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->create($triggers);
@@ -79,8 +81,8 @@ final class TriggerTest extends TestCase
     {
         $triggers = [
             [
-                'expression' => 'last(/Linux server/system.cpu.load[percpu,avg1])>5'
-            ]
+                'expression' => 'last(/Linux server/system.cpu.load[percpu,avg1])>5',
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -93,8 +95,8 @@ final class TriggerTest extends TestCase
     {
         $triggers = [
             [
-                'description' => 'Processor load is too high on {HOST.NAME}'
-            ]
+                'description' => 'Processor load is too high on {HOST.NAME}',
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -109,14 +111,14 @@ final class TriggerTest extends TestCase
             [
                 'triggerid' => '13938',
                 'status' => 1,
-                'priority' => 5
-            ]
+                'priority' => 5,
+            ],
         ];
         $expectedResult = ['triggerids' => ['13938']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.update', $triggers)
+            ->with(ZabbixAction::TRIGGER_UPDATE, $triggers)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->update($triggers);
@@ -128,8 +130,8 @@ final class TriggerTest extends TestCase
     {
         $triggers = [
             [
-                'status' => 1
-            ]
+                'status' => 1,
+            ],
         ];
 
         $this->expectException(ZabbixApiException::class);
@@ -145,7 +147,7 @@ final class TriggerTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.delete', $triggerIds)
+            ->with(ZabbixAction::TRIGGER_DELETE, $triggerIds)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->delete($triggerIds);
@@ -158,18 +160,18 @@ final class TriggerTest extends TestCase
         $triggers = [
             [
                 'description' => 'CPU Load High',
-                'expression' => 'last(/host/system.cpu.load)>5'
+                'expression' => 'last(/host/system.cpu.load)>5',
             ],
             [
                 'description' => 'Memory Usage High',
-                'expression' => 'last(/host/vm.memory.size[available])<1000000'
-            ]
+                'expression' => 'last(/host/vm.memory.size[available])<1000000',
+            ],
         ];
         $expectedResult = ['triggerids' => ['1', '2']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('trigger.create', $triggers)
+            ->with(ZabbixAction::TRIGGER_CREATE, $triggers)
             ->willReturn($expectedResult);
 
         $result = $this->trigger->create($triggers);

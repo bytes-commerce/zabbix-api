@@ -11,7 +11,7 @@ enum ZabbixAction: string
     case ACTION_GET = 'action.get';
     case ACTION_UPDATE = 'action.update';
     case ALERT_GET = 'alert.get';
-    case APPINFO_VERSION = 'appinfo.version';
+    case APIINFO_VERSION = 'apiinfo.version';
     case AUDITLOG_GET = 'auditlog.get';
     case DASHBOARD_CREATE = 'dashboard.create';
     case DASHBOARD_DELETE = 'dashboard.delete';

@@ -6,6 +6,7 @@ namespace BytesCommerce\ZabbixApi\Tests;
 
 use BytesCommerce\ZabbixApi\Actions\Action;
 use BytesCommerce\ZabbixApi\Actions\Dto\GetActionResponseDto;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
@@ -30,7 +31,7 @@ final class ActionTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('action.get', $expectedParams)
+            ->with(ZabbixAction::ACTION_GET, $expectedParams)
             ->willReturn($apiResult);
 
         $result = $this->action->get($params);
@@ -48,7 +49,7 @@ final class ActionTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('action.get', $params)
+            ->with(ZabbixAction::ACTION_GET, $params)
             ->willReturn($apiResult);
 
         $result = $this->action->get($params);
@@ -73,7 +74,7 @@ final class ActionTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('action.create', $actions)
+            ->with(ZabbixAction::ACTION_CREATE, $actions)
             ->willReturn($expectedResult);
 
         $result = $this->action->create($actions);
@@ -109,7 +110,7 @@ final class ActionTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('action.update', $actions)
+            ->with(ZabbixAction::ACTION_UPDATE, $actions)
             ->willReturn($expectedResult);
 
         $result = $this->action->update($actions);
@@ -138,7 +139,7 @@ final class ActionTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('action.delete', $actionIds)
+            ->with(ZabbixAction::ACTION_DELETE, $actionIds)
             ->willReturn($expectedResult);
 
         $result = $this->action->delete($actionIds);

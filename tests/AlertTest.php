@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\Alert;
+use BytesCommerce\ZabbixApi\Actions\Alert;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetAlertResponseDto;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -29,12 +31,12 @@ final class AlertTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('alert.get', $expectedParams)
+            ->with(ZabbixAction::ALERT_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->alert->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAlertResponseDto::class, $result);
     }
 
     public function testGetWithCustomOutput(): void
@@ -44,12 +46,12 @@ final class AlertTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('alert.get', $params)
+            ->with(ZabbixAction::ALERT_GET, $params)
             ->willReturn($expectedResult);
 
         $result = $this->alert->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAlertResponseDto::class, $result);
     }
 
     public function testGetWithDateTimeConversion(): void
@@ -57,17 +59,17 @@ final class AlertTest extends TestCase
         $timeFrom = new DateTime('2023-01-01 00:00:00');
         $timeTill = new DateTime('2023-01-02 00:00:00');
         $params = ['time_from' => $timeFrom, 'time_till' => $timeTill];
-        $expectedParams = ['time_from' => 1672531200, 'time_till' => 1672617600, 'output' => 'extend'];
+        $expectedParams = ['time_from' => $timeFrom->getTimestamp(), 'time_till' => $timeTill->getTimestamp(), 'output' => 'extend'];
         $expectedResult = [['alertid' => '1']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('alert.get', $expectedParams)
+            ->with(ZabbixAction::ALERT_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->alert->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAlertResponseDto::class, $result);
     }
 
     public function testGetWithUnixTimestamps(): void
@@ -78,11 +80,11 @@ final class AlertTest extends TestCase
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('alert.get', $expectedParams)
+            ->with(ZabbixAction::ALERT_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->alert->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAlertResponseDto::class, $result);
     }
 }
