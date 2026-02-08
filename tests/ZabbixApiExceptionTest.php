@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\ZabbixApi\Tests\Unit\Zabbix;
+namespace BytesCommerce\ZabbixApi\Tests;
 
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use PHPUnit\Framework\TestCase;

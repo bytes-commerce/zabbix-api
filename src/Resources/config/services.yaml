@@ -15,12 +15,21 @@ services:
             - '../../Message/'
             - '../../Enums/'
 
+    zabbix_api.http_client:
+        class: Symfony\Component\HttpClient\ScopingHttpClient
+        factory: ['Symfony\Component\HttpClient\ScopingHttpClient', 'forBaseUri']
+        arguments:
+            - '@http_client'
+            - '%zabbix_api.base_uri%'
+
     BytesCommerce\ZabbixApi\ZabbixClientInterface:
         class: BytesCommerce\ZabbixApi\ZabbixClient
         arguments:
+            $httpClient: '@zabbix_api.http_client'
             $cache: '@cache.app'
             $username: '%zabbix_api.username%'
             $password: '%zabbix_api.password%'
+            $apiToken: '%zabbix_api.api_token%'
             $authTtl: '%zabbix_api.auth_ttl%'
 
     BytesCommerce\ZabbixApi\ZabbixServiceInterface:

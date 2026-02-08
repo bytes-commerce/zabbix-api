@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
-use BytesCommerce\ZabbixApi\AuditLog;
+use BytesCommerce\ZabbixApi\Actions\AuditLog;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetAuditLogResponseDto;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use DateTime;
 use PHPUnit\Framework\TestCase;
@@ -27,18 +29,18 @@ final class AuditLogTest extends TestCase
         $expectedParams = [
             'userids' => '1',
             'output' => 'extend',
-            'selectDetails' => 'extend'
+            'selectDetails' => 'extend',
         ];
         $expectedResult = [['auditid' => '1', 'clock' => '1672531200']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('auditlog.get', $expectedParams)
+            ->with(ZabbixAction::AUDITLOG_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->auditLog->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAuditLogResponseDto::class, $result);
     }
 
     public function testGetWithCustomOutputAndSelectDetails(): void
@@ -46,18 +48,18 @@ final class AuditLogTest extends TestCase
         $params = [
             'output' => ['auditid', 'clock', 'resourcename'],
             'selectDetails' => ['field', 'oldvalue', 'newvalue'],
-            'filter' => ['resourcetype' => 4, 'action' => 1]
+            'filter' => ['resourcetype' => 4, 'action' => 1],
         ];
         $expectedResult = [['auditid' => '1', 'clock' => '1672531200', 'resourcename' => 'Test Host']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('auditlog.get', $params)
+            ->with(ZabbixAction::AUDITLOG_GET, $params)
             ->willReturn($expectedResult);
 
         $result = $this->auditLog->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAuditLogResponseDto::class, $result);
     }
 
     public function testGetWithDateTimeConversion(): void
@@ -66,21 +68,21 @@ final class AuditLogTest extends TestCase
         $timeTill = new DateTime('2023-01-02 00:00:00');
         $params = ['time_from' => $timeFrom, 'time_till' => $timeTill];
         $expectedParams = [
-            'time_from' => 1672531200,
-            'time_till' => 1672617600,
+            'time_from' => $timeFrom->getTimestamp(),
+            'time_till' => $timeTill->getTimestamp(),
             'output' => 'extend',
-            'selectDetails' => 'extend'
+            'selectDetails' => 'extend',
         ];
         $expectedResult = [['auditid' => '1']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('auditlog.get', $expectedParams)
+            ->with(ZabbixAction::AUDITLOG_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->auditLog->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAuditLogResponseDto::class, $result);
     }
 
     public function testGetWithUnixTimestamps(): void
@@ -91,18 +93,18 @@ final class AuditLogTest extends TestCase
             'time_till' => 1672617600,
             'resourcetype' => 4,
             'output' => 'extend',
-            'selectDetails' => 'extend'
+            'selectDetails' => 'extend',
         ];
         $expectedResult = [['auditid' => '1']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('auditlog.get', $expectedParams)
+            ->with(ZabbixAction::AUDITLOG_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->auditLog->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAuditLogResponseDto::class, $result);
     }
 
     public function testGetWithResourceTypeAndAction(): void
@@ -112,17 +114,17 @@ final class AuditLogTest extends TestCase
             'resourcetype' => 4,
             'action' => 1,
             'output' => 'extend',
-            'selectDetails' => 'extend'
+            'selectDetails' => 'extend',
         ];
         $expectedResult = [['auditid' => '1', 'resourcename' => 'Updated Host']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('auditlog.get', $expectedParams)
+            ->with(ZabbixAction::AUDITLOG_GET, $expectedParams)
             ->willReturn($expectedResult);
 
         $result = $this->auditLog->get($params);
 
-        self::assertSame($expectedResult, $result);
+        self::assertInstanceOf(GetAuditLogResponseDto::class, $result);
     }
 }

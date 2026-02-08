@@ -4,6 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
+use BytesCommerce\ZabbixApi\Actions\AbstractAction;
+use BytesCommerce\ZabbixApi\Actions\Host;
+use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use BytesCommerce\ZabbixApi\ZabbixService;
@@ -25,20 +28,20 @@ final class ZabbixServiceTest extends TestCase
     {
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('apiinfo.version')
-            ->willReturn('6.0.0');
+            ->with(ZabbixAction::APIINFO_VERSION, [])
+            ->willReturn('7.0.0');
 
         $version = $this->zabbixService->getApiVersion();
 
-        self::assertSame('6.0.0', $version);
+        self::assertSame('7.0.0', $version);
     }
 
     public function testGetApiVersionInvalidResponse(): void
     {
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('apiinfo.version')
-            ->willReturn(['version' => '6.0.0']);
+            ->with(ZabbixAction::APIINFO_VERSION, [])
+            ->willReturn(['version' => '7.0.0']);
 
         $this->expectException(ZabbixApiException::class);
         $this->expectExceptionMessage('Invalid API version response');
@@ -50,11 +53,26 @@ final class ZabbixServiceTest extends TestCase
     {
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with('apiinfo.version')
-            ->willReturn('6.0.0');
+            ->with(ZabbixAction::APIINFO_VERSION, [])
+            ->willReturn('7.0.0');
 
         $result = $this->zabbixService->checkHealth();
 
         self::assertTrue($result);
+    }
+
+    public function testActionReturnsCorrectInstance(): void
+    {
+        $action = $this->zabbixService->action(Host::class);
+
+        self::assertInstanceOf(Host::class, $action);
+        self::assertInstanceOf(AbstractAction::class, $action);
+    }
+
+    public function testActionThrowsOnInvalidClass(): void
+    {
+        $this->expectException(ZabbixApiException::class);
+
+        $this->zabbixService->action(\stdClass::class);
     }
 }

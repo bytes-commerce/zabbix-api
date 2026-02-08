@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Tests;
 
+use BytesCommerce\ZabbixApi\Actions\AbstractAction;
 use BytesCommerce\ZabbixApi\Actions\Item;
 use BytesCommerce\ZabbixApi\ActionService;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
@@ -50,7 +51,7 @@ final class ActionServiceTest extends TestCase
     public function testCallUnsupportedClass(): void
     {
         $this->expectException(ZabbixApiException::class);
-        $this->expectExceptionMessage('Unsupported action class: stdClass');
+        $this->expectExceptionMessage(sprintf('Class stdClass must extend %s', AbstractAction::class));
 
         $this->actionService->call(\stdClass::class, []);
     }
