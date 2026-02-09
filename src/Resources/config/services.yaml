@@ -4,6 +4,17 @@ services:
         autowire: true
         autoconfigure: true
 
+    BytesCommerce\ZabbixApi\:
+        resource: '../../*'
+        exclude:
+            - '../../DependencyInjection/'
+            - '../../Resources/'
+            - '../../Actions/Dto/'
+            - '../../Provisioning/Dto/'
+            - '../../Provisioning/ValueObject/'
+            - '../../Message/'
+            - '../../Enums/'
+
     zabbix_api.http_client:
         class: Symfony\Component\HttpClient\ScopingHttpClient
         factory: ['Symfony\Component\HttpClient\ScopingHttpClient', 'forBaseUri']
@@ -26,3 +37,35 @@ services:
 
     BytesCommerce\ZabbixApi\ActionServiceInterface:
         class: BytesCommerce\ZabbixApi\ActionService
+
+    BytesCommerce\ZabbixApi\Contract\ZabbixNamingProviderInterface:
+        class: BytesCommerce\ZabbixApi\Service\ZabbixNaming
+
+    BytesCommerce\ZabbixApi\Contract\ZabbixClientWithApiKeyInterface:
+        class: BytesCommerce\ZabbixApi\Service\ZabbixClientWithApiKey
+        arguments:
+            $httpClient: '@zabbix_api.http_client'
+            $cache: '@cache.app'
+
+    BytesCommerce\ZabbixApi\Contract\ZabbixClientWrapperInterface:
+        class: BytesCommerce\ZabbixApi\Service\ZabbixClientWrapper
+
+    BytesCommerce\ZabbixApi\Contract\ItemDefinitionProviderInterface:
+        class: BytesCommerce\ZabbixApi\Service\ZabbixItemRegistry
+        arguments:
+            $cache: '@cache.app'
+
+    BytesCommerce\ZabbixApi\Contract\ZabbixSenderInterface:
+        class: BytesCommerce\ZabbixApi\Setup\ZabbixSender
+
+    BytesCommerce\ZabbixApi\Contract\ZabbixSetupInterface:
+        class: BytesCommerce\ZabbixApi\Setup\ZabbixSetup
+
+    BytesCommerce\ZabbixApi\Contract\DashboardApiInterface:
+        class: BytesCommerce\ZabbixApi\Provisioning\DashboardApi
+
+    BytesCommerce\ZabbixApi\Contract\DefinitionLoaderInterface:
+        class: BytesCommerce\ZabbixApi\Provisioning\DefinitionLoader
+
+    BytesCommerce\ZabbixApi\Contract\DashboardProvisionerInterface:
+        class: BytesCommerce\ZabbixApi\Provisioning\DashboardProvisioner

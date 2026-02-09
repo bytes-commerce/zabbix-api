@@ -1,0 +1,9 @@
+
+framework:
+  http_client:
+    scoped_clients:
+      zabbix.http_client:
+        base_uri: '%env(ZABBIX_API_URL)%'
+        timeout: 30
+        headers:
+          Content-Type: 'application/json-rpc'

@@ -13,9 +13,6 @@ final class ZabbixApiExtension extends Extension
 {
     public function load(array $configs, ContainerBuilder $container): void
     {
-        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
-        $loader->load('services.yaml');
-
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
@@ -24,10 +21,12 @@ final class ZabbixApiExtension extends Extension
         $container->setParameter('zabbix_api.username', $config['username']);
         $container->setParameter('zabbix_api.password', $config['password']);
         $container->setParameter('zabbix_api.auth_ttl', $config['auth_ttl']);
-    }
+        $container->setParameter('zabbix_api.app_name', $config['app_name']);
+        $container->setParameter('zabbix_api.host_group', $config['host_group']);
+        $container->setParameter('zabbix_api.dashboard_config_path', $config['dashboard_config_path']);
+        $container->setParameter('zabbix_api.setup_enabled', $config['setup_enabled']);
 
-    public function getConfiguration(array $config, ContainerBuilder $container): ?Configuration
-    {
-        return new Configuration();
+        $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
+        $loader->load('services.yaml');
     }
 }
