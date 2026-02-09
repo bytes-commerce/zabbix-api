@@ -14,12 +14,9 @@ final readonly class ZabbixNaming implements ZabbixNamingProviderInterface
 
     public function __construct(
         private SluggerInterface $slugger,
-        #[Autowire('%kernel.environment%')]
-        private string $appEnv,
-        #[Autowire('%zabbix_api.app_name%')]
-        private string $appName,
-        #[Autowire('%zabbix_api.host_group%')]
-        private string $hostGroup,
+        #[Autowire('%kernel.environment%')] private string $appEnv,
+        #[Autowire('%zabbix_api.app_name%')] private string $appName,
+        #[Autowire('%zabbix_api.host_group%')] private string $hostGroup,
     ) {
     }
 

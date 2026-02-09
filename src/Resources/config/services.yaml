@@ -44,7 +44,7 @@ services:
     BytesCommerce\ZabbixApi\Contract\ZabbixClientWithApiKeyInterface:
         class: BytesCommerce\ZabbixApi\Service\ZabbixClientWithApiKey
         arguments:
-            $httpClient: '@zabbix.http_client'
+            $httpClient: '@zabbix_api.http_client'
             $cache: '@cache.app'
 
     BytesCommerce\ZabbixApi\Contract\ZabbixClientWrapperInterface:
