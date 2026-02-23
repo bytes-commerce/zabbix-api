@@ -16,7 +16,6 @@ final class Configuration implements ConfigurationInterface
         $treeBuilder->getRootNode()
             ->children()
                 ->scalarNode('base_uri')
-                    ->isRequired()
                     ->defaultValue('%env(ZABBIX_API_URL)%')
                     ->info('Base URI for Zabbix API')
                 ->end()
