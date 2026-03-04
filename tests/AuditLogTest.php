@@ -31,7 +31,15 @@ final class AuditLogTest extends TestCase
             'output' => 'extend',
             'selectDetails' => 'extend',
         ];
-        $expectedResult = [['auditid' => '1', 'clock' => '1672531200']];
+        $expectedResult = [[
+            'auditid' => '1',
+            'userid' => '1',
+            'clock' => 1672531200,
+            'action' => '1',
+            'resourcetype' => '4',
+            'resourceid' => '100',
+            'resourcename' => 'Test Host',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -50,7 +58,15 @@ final class AuditLogTest extends TestCase
             'selectDetails' => ['field', 'oldvalue', 'newvalue'],
             'filter' => ['resourcetype' => 4, 'action' => 1],
         ];
-        $expectedResult = [['auditid' => '1', 'clock' => '1672531200', 'resourcename' => 'Test Host']];
+        $expectedResult = [[
+            'auditid' => '1',
+            'userid' => '1',
+            'clock' => 1672531200,
+            'action' => '1',
+            'resourcetype' => '4',
+            'resourceid' => '100',
+            'resourcename' => 'Test Host',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -73,7 +89,15 @@ final class AuditLogTest extends TestCase
             'output' => 'extend',
             'selectDetails' => 'extend',
         ];
-        $expectedResult = [['auditid' => '1']];
+        $expectedResult = [[
+            'auditid' => '1',
+            'userid' => '1',
+            'clock' => 1672531200,
+            'action' => '1',
+            'resourcetype' => '4',
+            'resourceid' => '100',
+            'resourcename' => 'Test Host',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -95,7 +119,15 @@ final class AuditLogTest extends TestCase
             'output' => 'extend',
             'selectDetails' => 'extend',
         ];
-        $expectedResult = [['auditid' => '1']];
+        $expectedResult = [[
+            'auditid' => '1',
+            'userid' => '1',
+            'clock' => 1672531200,
+            'action' => '1',
+            'resourcetype' => '4',
+            'resourceid' => '100',
+            'resourcename' => 'Test Host',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -116,7 +148,15 @@ final class AuditLogTest extends TestCase
             'output' => 'extend',
             'selectDetails' => 'extend',
         ];
-        $expectedResult = [['auditid' => '1', 'resourcename' => 'Updated Host']];
+        $expectedResult = [[
+            'auditid' => '1',
+            'userid' => '1',
+            'clock' => 1672531200,
+            'action' => '1',
+            'resourcetype' => '4',
+            'resourceid' => '100',
+            'resourcename' => 'Updated Host',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')

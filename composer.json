@@ -33,7 +33,8 @@
     "require-dev": {
         "phpunit/phpunit": "^9.6.22",
         "rector/rector": "^2.0",
-        "phpstan/phpstan": "^2.1"
+        "phpstan/phpstan": "^2.1",
+        "symfony/yaml": "^7|^8"
     },
     "scripts": {
         "test": "vendor/bin/phpunit",

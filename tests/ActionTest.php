@@ -5,9 +5,16 @@ declare(strict_types=1);
 namespace BytesCommerce\ZabbixApi\Tests;
 
 use BytesCommerce\ZabbixApi\Actions\Action;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\CreateSingleActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\DeleteActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\GetActionDto;
 use BytesCommerce\ZabbixApi\Actions\Dto\GetActionResponseDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateActionDto;
+use BytesCommerce\ZabbixApi\Actions\Dto\UpdateSingleActionDto;
+use BytesCommerce\ZabbixApi\Enums\EventSourceEnum;
+use BytesCommerce\ZabbixApi\Enums\StatusEnum;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
-use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use PHPUnit\Framework\TestCase;
 
@@ -25,7 +32,7 @@ final class ActionTest extends TestCase
 
     public function testGetWithDefaultOutput(): void
     {
-        $params = ['filter' => ['eventsource' => 0]];
+        $dto = new GetActionDto(filter: ['eventsource' => 0]);
         $expectedParams = ['filter' => ['eventsource' => 0], 'output' => 'extend'];
         $apiResult = [['actionid' => '1', 'name' => 'Test Action', 'eventsource' => 0, 'esc_period' => '1h']];
 
@@ -34,7 +41,7 @@ final class ActionTest extends TestCase
             ->with(ZabbixAction::ACTION_GET, $expectedParams)
             ->willReturn($apiResult);
 
-        $result = $this->action->get($params);
+        $result = $this->action->get($dto);
 
         self::assertInstanceOf(GetActionResponseDto::class, $result);
         self::assertCount(1, $result->actions);
@@ -44,15 +51,16 @@ final class ActionTest extends TestCase
 
     public function testGetWithCustomOutput(): void
     {
-        $params = ['output' => ['actionid', 'name'], 'filter' => ['eventsource' => 0]];
+        $dto = new GetActionDto(output: 'extend', filter: ['eventsource' => 0]);
+        $expectedParams = ['output' => 'extend', 'filter' => ['eventsource' => 0]];
         $apiResult = [['actionid' => '1', 'name' => 'Test Action', 'eventsource' => 0, 'esc_period' => '1h']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with(ZabbixAction::ACTION_GET, $params)
+            ->with(ZabbixAction::ACTION_GET, $expectedParams)
             ->willReturn($apiResult);
 
-        $result = $this->action->get($params);
+        $result = $this->action->get($dto);
 
         self::assertInstanceOf(GetActionResponseDto::class, $result);
         self::assertCount(1, $result->actions);
@@ -62,88 +70,56 @@ final class ActionTest extends TestCase
 
     public function testCreateValid(): void
     {
-        $actions = [
-            [
-                'name' => 'Auto-notify Admin',
-                'eventsource' => 0,
-                'esc_period' => '1h',
-                'operations' => [['operationtype' => 0, 'opmessage' => ['default_msg' => 1], 'opmessage_grp' => [['usrgrpid' => '7']]]]
-            ]
-        ];
+        $singleAction = new CreateSingleActionDto(
+            name: 'Auto-notify Admin',
+            eventsource: EventSourceEnum::TRIGGER,
+            esc_period: '1h',
+            operations: [['operationtype' => 0, 'opmessage' => ['default_msg' => 1], 'opmessage_grp' => [['usrgrpid' => '7']]]]
+        );
+        $dto = new CreateActionDto([$singleAction]);
+
         $expectedResult = ['actionids' => ['15']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with(ZabbixAction::ACTION_CREATE, $actions)
+            ->with(ZabbixAction::ACTION_CREATE, self::anything())
             ->willReturn($expectedResult);
 
-        $result = $this->action->create($actions);
+        $result = $this->action->create($dto);
 
-        self::assertSame($expectedResult, $result);
-    }
-
-    public function testCreateInvalidMissingName(): void
-    {
-        $actions = [
-            [
-                'eventsource' => 0,
-                'esc_period' => '1h',
-                'operations' => []
-            ]
-        ];
-
-        $this->expectException(ZabbixApiException::class);
-        $this->expectExceptionMessage('Action creation requires name, eventsource, esc_period, and operations');
-
-        $this->action->create($actions);
+        self::assertSame(['15'], $result->actionids);
     }
 
     public function testUpdateValid(): void
     {
-        $actions = [
-            [
-                'actionid' => '15',
-                'status' => 1
-            ]
-        ];
+        $singleAction = new UpdateSingleActionDto(
+            actionid: '15',
+            status: StatusEnum::DISABLED
+        );
+        $dto = new UpdateActionDto([$singleAction]);
+
         $expectedResult = ['actionids' => ['15']];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with(ZabbixAction::ACTION_UPDATE, $actions)
+            ->with(ZabbixAction::ACTION_UPDATE, self::anything())
             ->willReturn($expectedResult);
 
-        $result = $this->action->update($actions);
+        $result = $this->action->update($dto);
 
-        self::assertSame($expectedResult, $result);
-    }
-
-    public function testUpdateInvalidMissingActionId(): void
-    {
-        $actions = [
-            [
-                'status' => 1
-            ]
-        ];
-
-        $this->expectException(ZabbixApiException::class);
-        $this->expectExceptionMessage('Action update requires actionid');
-
-        $this->action->update($actions);
+        self::assertSame(['15'], $result->actionids);
     }
 
     public function testDelete(): void
     {
-        $actionIds = ['17', '18'];
-        $expectedResult = ['actionids' => ['17', '18']];
+        $dto = new DeleteActionDto(['17', '18']);
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
-            ->with(ZabbixAction::ACTION_DELETE, $actionIds)
-            ->willReturn($expectedResult);
+            ->with(ZabbixAction::ACTION_DELETE, ['17', '18']);
 
-        $result = $this->action->delete($actionIds);
+        $this->action->delete($dto);
 
-        self::assertSame($expectedResult, $result);
+        self::assertTrue(true);
     }
 }

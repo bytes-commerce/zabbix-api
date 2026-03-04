@@ -27,7 +27,11 @@ final class HostTest extends TestCase
     {
         $params = ['filter' => ['status' => 0]];
         $expectedParams = ['filter' => ['status' => 0], 'output' => 'extend'];
-        $expectedResult = [['hostid' => '1', 'host' => 'Test Host']];
+        $expectedResult = [[
+            'hostid' => '1',
+            'host' => 'Test Host',
+            'status' => 0,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -46,7 +50,12 @@ final class HostTest extends TestCase
             'selectInterfaces' => 'extend',
             'selectGroups' => 'extend',
         ];
-        $expectedResult = [['hostid' => '1', 'host' => 'Test Host', 'name' => 'Test Host Display']];
+        $expectedResult = [[
+            'hostid' => '1',
+            'host' => 'Test Host',
+            'name' => 'Test Host Display',
+            'status' => 0,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')

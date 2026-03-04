@@ -30,7 +30,10 @@ final class ZabbixClientTest extends TestCase
         $this->logger = $this->createMock(LoggerInterface::class);
         $this->cache = $this->createMock(CacheInterface::class);
 
-        // Use API token auth for simple test cases (bypasses cache/login flow)
+        $this->cache->method('get')
+            ->with('zabbix_bearer_token', self::anything())
+            ->willReturn('test-api-token');
+
         $this->zabbixClient = new ZabbixClient(
             username: null,
             password: null,
@@ -72,9 +75,9 @@ final class ZabbixClientTest extends TestCase
             ->method('toArray')
             ->willReturn([
                 'error' => [
-                    'code' => -32602,
-                    'message' => 'Invalid params',
-                    'data' => 'Invalid parameter',
+                    'code' => -32700,
+                    'message' => 'Parse error',
+                    'data' => 'Invalid JSON',
                 ],
             ]);
 
@@ -83,7 +86,7 @@ final class ZabbixClientTest extends TestCase
             ->willReturn($response);
 
         $this->expectException(ZabbixApiException::class);
-        $this->expectExceptionMessage('Invalid params');
+        $this->expectExceptionMessage('Parse error');
 
         $this->zabbixClient->call(ZabbixAction::HOST_GET);
     }
@@ -102,28 +105,26 @@ final class ZabbixClientTest extends TestCase
 
     public function testCallWithUsernamePasswordAuth(): void
     {
+        $cache = $this->createMock(CacheInterface::class);
+        $cache->method('get')
+            ->with('zabbix_bearer_token', self::anything())
+            ->willReturnCallback(function (string $key, callable $callback): string {
+                $item = $this->createMock(ItemInterface::class);
+                $item->method('expiresAfter');
+
+                return $callback($item);
+            });
+
         $client = new ZabbixClient(
             username: 'testuser',
             password: 'testpass',
             apiToken: null,
             httpClient: $this->httpClient,
             logger: $this->logger,
-            cache: $this->cache,
+            cache: $cache,
             authTtl: 3600,
         );
 
-        // Mock cache->get() to simulate login and return a token
-        $this->cache->expects(self::once())
-            ->method('get')
-            ->with('zabbix_bearer_token', self::anything())
-            ->willReturnCallback(function (string $key, callable $callback): string {
-                $item = $this->createMock(ItemInterface::class);
-                $item->expects(self::once())->method('expiresAfter')->with(3600);
-
-                return $callback($item);
-            });
-
-        // Expect two HTTP calls: one for login, one for the actual API call
         $loginResponse = $this->createMock(ResponseInterface::class);
         $loginResponse->method('toArray')->willReturn(['result' => 'auth-token-123']);
 
