@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<phpunit xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:noNamespaceSchemaLocation="vendor/phpunit/phpunit/phpunit.xsd"
+         bootstrap="vendor/autoload.php"
+         colors="true"
+         verbose="true"
+         failOnRisky="true"
+         failOnWarning="true"
+         stopOnFailure="false">
+    <testsuites>
+        <testsuite name="Zabbix API Test Suite">
+            <directory>tests</directory>
+        </testsuite>
+    </testsuites>
+
+    <coverage>
+        <include>
+            <directory suffix=".php">src</directory>
+        </include>
+        <exclude>
+            <directory>src/DependencyInjection</directory>
+            <directory>src/Resources</directory>
+            <directory>src/Enums</directory>
+            <directory>src/Actions/Dto</directory>
+            <directory>src/Provisioning/Dto</directory>
+            <directory>src/Provisioning/ValueObject</directory>
+            <directory>src/Message</directory>
+        </exclude>
+    </coverage>
+</phpunit>
