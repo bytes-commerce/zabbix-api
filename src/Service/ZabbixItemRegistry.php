@@ -62,16 +62,24 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
     {
         return [
             'tx.duration_ms' => [
-                'name' => 'Transaction Duration (ms)',
+                'name' => 'Transaction Duration',
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'units' => 'ms',
             ],
             'tx.http_status' => [
                 'name' => 'HTTP Status Code',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+            ],
+            'tx.error_rate' => [
+                'name' => 'HTTP Error Rate',
+                'type' => 2,
+                'value_type' => 0,
+                'history' => '7d',
+                'units' => '%',
             ],
             'auth.login.success' => [
                 'name' => 'Login Success Count',
@@ -120,6 +128,51 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 4,
                 'history' => '7d',
+            ],
+            'messenger.queue.depth' => [
+                'name' => 'Message Queue Depth',
+                'type' => 2,
+                'value_type' => 3,
+                'history' => '7d',
+            ],
+            'messenger.failed.count' => [
+                'name' => 'Failed Messages Count',
+                'type' => 2,
+                'value_type' => 3,
+                'history' => '7d',
+            ],
+            'messenger.processing_ms' => [
+                'name' => 'Message Processing Time',
+                'type' => 2,
+                'value_type' => 0,
+                'history' => '7d',
+                'units' => 'ms',
+            ],
+            'messenger.received' => [
+                'name' => 'Messages Received',
+                'type' => 2,
+                'value_type' => 3,
+                'history' => '7d',
+            ],
+            'messenger.handled' => [
+                'name' => 'Messages Handled',
+                'type' => 2,
+                'value_type' => 3,
+                'history' => '7d',
+            ],
+            'cache.hit_rate' => [
+                'name' => 'Cache Hit Rate',
+                'type' => 2,
+                'value_type' => 0,
+                'history' => '7d',
+                'units' => '%',
+            ],
+            'db.query_time_ms' => [
+                'name' => 'Database Query Time',
+                'type' => 2,
+                'value_type' => 0,
+                'history' => '7d',
+                'units' => 'ms',
             ],
         ];
     }

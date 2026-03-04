@@ -46,20 +46,20 @@ final class DoctrineEntitySubscriber
 
     public function postPersist(PostPersistEventArgs $event): void
     {
-        $this->dispatch($event->getObject(), 'insert');
+        $this->dispatch($event->getObject(), 'entity.persist.success');
     }
 
     public function postUpdate(PostUpdateEventArgs $event): void
     {
-        $this->dispatch($event->getObject(), 'update');
+        $this->dispatch($event->getObject(), 'entity.update.success');
     }
 
     public function postRemove(PostRemoveEventArgs $event): void
     {
-        $this->dispatch($event->getObject(), 'delete');
+        $this->dispatch($event->getObject(), 'entity.remove.success');
     }
 
-    private function dispatch(object $entity, string $operation): void
+    private function dispatch(object $entity, string $metricKey): void
     {
         if ($this->isExcluded($entity)) {
             return;
@@ -68,12 +68,11 @@ final class DoctrineEntitySubscriber
         $entityClass = str_replace('\\', '.', $entity::class);
 
         $this->bus->dispatch(new PushMetricMessage(
-            key: $this->naming->getItemKey('doctrine.entity_change'),
+            key: $this->naming->getItemKey($metricKey),
             value: 1,
             tags: [
                 'env' => $this->appEnv,
                 'entity' => $entityClass,
-                'operation' => $operation,
             ],
         ));
     }

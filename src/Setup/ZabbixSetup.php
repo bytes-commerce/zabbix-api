@@ -23,6 +23,7 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
         private LoggerInterface $logger,
         #[Autowire('%zabbix_api.setup_enabled%')]
         private bool $setupEnabled,
+        private ?TriggerProvisioner $triggerProvisioner = null,
     ) {
     }
 
@@ -50,6 +51,8 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
         $this->registry->setHostId($hostId);
 
         $this->ensureItems($hostId);
+
+        $this->ensureTriggers($hostId);
     }
 
     public function ensureHost(): string
@@ -140,14 +143,20 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
             }
 
             try {
-                $result = $this->client->call(ZabbixAction::ITEM_CREATE, [
+                $itemData = [
                     'name' => $definition['name'],
                     'key_' => $key,
                     'hostid' => $hostId,
                     'type' => $definition['type'],
                     'value_type' => $definition['value_type'],
                     'history' => $definition['history'],
-                ]);
+                ];
+
+                if (isset($definition['units'])) {
+                    $itemData['units'] = $definition['units'];
+                }
+
+                $result = $this->client->call(ZabbixAction::ITEM_CREATE, $itemData);
             } catch (ZabbixApiException $e) {
                 $this->logger->error('Failed to create Zabbix item', [
                     'key' => $key,
@@ -163,5 +172,15 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
             $this->registry->setItemId($key, $itemId);
             $this->logger->info('Zabbix item created', ['key' => $key, 'itemid' => $itemId]);
         }
+    }
+
+    private function ensureTriggers(string $hostId): void
+    {
+        if ($this->triggerProvisioner === null) {
+            return;
+        }
+
+        $hostName = $this->naming->getHostName();
+        $this->triggerProvisioner->provisionTriggers($hostId, $hostName);
     }
 }
