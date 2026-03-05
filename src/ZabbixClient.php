@@ -133,6 +133,9 @@ final class ZabbixClient implements ZabbixClientInterface
         return $result;
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     private function executeApiCall(ZabbixAction $action, array $params, ?string $authToken): mixed
     {
         $method = $action->value;
@@ -166,7 +169,9 @@ final class ZabbixClient implements ZabbixClientInterface
             $data = $response->toArray();
 
             if (isset($data['error']) && is_array($data['error'])) {
-                $error = ResponseValidator::ensureErrorStructure($data['error']);
+                $error = ResponseValidator::ensureErrorStructure(
+                    ResponseValidator::ensureArray($data['error']),
+                );
                 throw new ZabbixApiException(
                     $error['message'],
                     $error['code'],

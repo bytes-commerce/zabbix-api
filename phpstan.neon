@@ -14,6 +14,3 @@ parameters:
 
     ignoreErrors:
         - identifier: missingType.iterableValue
-        - identifier: return.unusedType
-        - identifier: staticMethod.void
-        - identifier: staticMethod.alreadyNarrowedType
