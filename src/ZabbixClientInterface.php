@@ -9,7 +9,7 @@ use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 interface ZabbixClientInterface
 {
     /**
-     * @param array<string, mixed> $params
+     * @param array<int|string, mixed> $params
      */
     public function call(ZabbixAction $action, array $params = []): mixed;
 }

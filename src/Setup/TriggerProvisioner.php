@@ -28,10 +28,15 @@ final readonly class TriggerProvisioner
         $triggerDefinitions = $this->getTriggerDefinitions($hostId, $hostName);
 
         foreach ($triggerDefinitions as $triggerDef) {
-            $this->ensureTrigger($triggerDef, $hostId);
+            if (is_array($triggerDef)) {
+                $this->ensureTrigger($triggerDef, $hostId);
+            }
         }
     }
 
+    /**
+     * @return array<int, array<string, mixed>>
+     */
     private function getTriggerDefinitions(string $hostId, string $hostName): array
     {
         $durationKey = $this->naming->getItemKey('tx.duration_ms');
@@ -104,6 +109,9 @@ final readonly class TriggerProvisioner
         ];
     }
 
+    /**
+     * @param array<string, mixed> $triggerDef
+     */
     private function ensureTrigger(array $triggerDef, string $hostId): void
     {
         $existingTriggers = $this->triggerAction->get([
@@ -121,12 +129,17 @@ final readonly class TriggerProvisioner
         try {
             $result = $this->triggerAction->create([$triggerDef]);
 
-            Assert::keyExists($result, 'triggerids', 'Failed to create trigger');
+            if (is_array($result)) {
+                Assert::keyExists($result, 'triggerids', 'Failed to create trigger');
 
-            $this->logger->info('Trigger created', [
-                'description' => $triggerDef['description'],
-                'triggerid' => $result['triggerids'][0] ?? null,
-            ]);
+                $triggerIds = $result['triggerids'];
+                $triggerId = is_array($triggerIds) && isset($triggerIds[0]) ? $triggerIds[0] : null;
+
+                $this->logger->info('Trigger created', [
+                    'description' => $triggerDef['description'],
+                    'triggerid' => $triggerId,
+                ]);
+            }
         } catch (\Throwable $e) {
             $this->logger->error('Failed to create trigger', [
                 'description' => $triggerDef['description'],

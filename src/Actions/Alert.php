@@ -17,6 +17,9 @@ final class Alert extends AbstractAction
         return 'alert';
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function get(array $params): GetAlertResponseDto
     {
         $processedParams = $this->processParams($params);

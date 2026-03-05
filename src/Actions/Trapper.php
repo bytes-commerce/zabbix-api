@@ -36,11 +36,15 @@ final class Trapper
      */
     public function send(string $host, string $key, mixed $value, ?int $clock = null): array
     {
+        $stringValue = is_scalar($value) || $value instanceof \Stringable
+            ? (string) $value
+            : json_encode($value, \JSON_THROW_ON_ERROR);
+
         $data = [
             [
                 'host' => $host,
                 'key' => $key,
-                'value' => (string) $value
+                'value' => $stringValue
             ]
         ];
 
@@ -78,10 +82,15 @@ final class Trapper
                 throw new ZabbixApiException('Each metric must have host, key, and value', -1);
             }
 
+            $value = $metric['value'];
+            $stringValue = is_scalar($value) || $value instanceof \Stringable
+                ? (string) $value
+                : json_encode($value, \JSON_THROW_ON_ERROR);
+
             $item = [
                 'host' => $metric['host'],
                 'key' => $metric['key'],
-                'value' => (string) $metric['value']
+                'value' => $stringValue
             ];
 
             if (isset($metric['clock'])) {
@@ -99,7 +108,9 @@ final class Trapper
         $json = json_encode($payload, \JSON_THROW_ON_ERROR);
         $message = $this->buildMessage($json);
 
-        return $this->sendToZabbix($message);
+        $result = $this->sendToZabbix($message);
+
+        return $result;
     }
 
     private function buildMessage(string $json): string
@@ -110,6 +121,18 @@ final class Trapper
         return self::ZABBIX_HEADER . $lengthPacked . $json;
     }
 
+    /**
+     * @return array{
+     *     response: string,
+     *     info: string,
+     *     processed?: int,
+     *     failed?: int,
+     *     total?: int,
+     *     seconds_spent?: float
+     * }
+     *
+     * @throws ZabbixApiException
+     */
     private function sendToZabbix(string $message): array
     {
         $socket = @stream_socket_client(
@@ -158,11 +181,46 @@ final class Trapper
             throw new ZabbixApiException('Invalid JSON response from Zabbix server: ' . $e->getMessage(), -1);
         }
 
-        if (isset($result['info'])) {
-            $result = array_merge($result, $this->parseInfoString($result['info']));
+        if (!is_array($result)) {
+            throw new ZabbixApiException('Invalid response from Zabbix server: expected array', -1);
         }
 
-        return $result;
+        if (isset($result['info']) && is_string($result['info'])) {
+            $parsed = $this->parseInfoString($result['info']);
+            foreach ($parsed as $key => $value) {
+                $result[$key] = $value;
+            }
+        }
+
+        $response = $result['response'] ?? null;
+        $info = $result['info'] ?? null;
+
+        if (!is_string($response) || !is_string($info)) {
+            throw new ZabbixApiException('Invalid response from Zabbix server: missing required fields', -1);
+        }
+
+        $typedResult = [
+            'response' => $response,
+            'info' => $info,
+        ];
+
+        if (isset($result['processed']) && is_int($result['processed'])) {
+            $typedResult['processed'] = $result['processed'];
+        }
+
+        if (isset($result['failed']) && is_int($result['failed'])) {
+            $typedResult['failed'] = $result['failed'];
+        }
+
+        if (isset($result['total']) && is_int($result['total'])) {
+            $typedResult['total'] = $result['total'];
+        }
+
+        if (isset($result['seconds_spent']) && (is_float($result['seconds_spent']) || is_int($result['seconds_spent']))) {
+            $typedResult['seconds_spent'] = (float) $result['seconds_spent'];
+        }
+
+        return $typedResult;
     }
 
     private function parseInfoString(string $info): array

@@ -60,6 +60,13 @@ final readonly class ActionService implements ActionServiceInterface
             );
         }
 
-        return $this->zabbixClient->call($action, $params);
+        $typedParams = [];
+        foreach ($params as $key => $value) {
+            if (is_string($key)) {
+                $typedParams[$key] = $value;
+            }
+        }
+
+        return $this->zabbixClient->call($action, $typedParams);
     }
 }

@@ -25,7 +25,11 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
         $item = $this->cache->getItem(self::CACHE_KEY_HOST_ID);
         $hostId = $item->get();
 
-        return $hostId !== null ? (string) $hostId : null;
+        if ($hostId === null) {
+            return null;
+        }
+
+        return is_string($hostId) ? $hostId : null;
     }
 
     public function setHostId(string $hostId): void
@@ -43,7 +47,9 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
             return null;
         }
 
-        return $itemIds[$key] ?? null;
+        $value = $itemIds[$key] ?? null;
+
+        return is_string($value) ? $value : null;
     }
 
     public function setItemId(string $key, string $itemId): void

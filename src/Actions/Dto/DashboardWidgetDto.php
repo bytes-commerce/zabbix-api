@@ -58,9 +58,24 @@ final readonly class DashboardWidgetDto
             y: $y,
             width: $width,
             height: $height,
-            fields: isset($data['fields']) && is_array($data['fields']) ? $data['fields'] : null,
+            fields: isset($data['fields']) && is_array($data['fields']) ? self::normalizeFields($data['fields']) : null,
             view_mode: isset($data['view_mode']) && is_string($data['view_mode']) ? $data['view_mode'] : null,
         );
+    }
+
+    /**
+     * @param array<mixed, mixed> $fields
+     * @return array<string, mixed>
+     */
+    private static function normalizeFields(array $fields): array
+    {
+        $normalized = [];
+        foreach ($fields as $key => $value) {
+            if (is_string($key)) {
+                $normalized[$key] = $value;
+            }
+        }
+        return $normalized;
     }
 
     public function getType(): string

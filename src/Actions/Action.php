@@ -64,7 +64,7 @@ final class Action extends AbstractAction
 
     public function delete(DeleteActionDto $dto): DeleteActionResponseDto
     {
-        $this->client->call(ZabbixAction::ACTION_DELETE, ['actionids' => $dto->actionIds]);
+        $this->client->call(ZabbixAction::ACTION_DELETE, $dto->actionIds);
 
         return new DeleteActionResponseDto();
     }

@@ -52,23 +52,41 @@ final class HostGroup extends AbstractAction
     {
         $params = array_map($this->mapCreateHostGroup(...), $dto->hostGroups);
 
-        $result = $this->client->call(ZabbixAction::HOSTGROUP_CREATE, $params);
+        $result = $this->client->call(ZabbixAction::HOSTGROUP_CREATE, ['groups' => $params]);
 
-        return new CreateHostGroupResponseDto($result['groupids']);
+        $groupids = [];
+        if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
+            foreach ($result['groupids'] as $id) {
+                if (is_string($id)) {
+                    $groupids[] = $id;
+                }
+            }
+        }
+
+        return new CreateHostGroupResponseDto($groupids);
     }
 
     public function update(UpdateHostGroupDto $dto): UpdateHostGroupResponseDto
     {
         $params = array_map($this->mapUpdateHostGroup(...), $dto->hostGroups);
 
-        $result = $this->client->call(ZabbixAction::HOSTGROUP_UPDATE, $params);
+        $result = $this->client->call(ZabbixAction::HOSTGROUP_UPDATE, ['groups' => $params]);
 
-        return new UpdateHostGroupResponseDto($result['groupids']);
+        $groupids = [];
+        if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
+            foreach ($result['groupids'] as $id) {
+                if (is_string($id)) {
+                    $groupids[] = $id;
+                }
+            }
+        }
+
+        return new UpdateHostGroupResponseDto($groupids);
     }
 
     public function delete(DeleteHostGroupDto $dto): DeleteHostGroupResponseDto
     {
-        $this->client->call(ZabbixAction::HOSTGROUP_DELETE, $dto->groupIds);
+        $this->client->call(ZabbixAction::HOSTGROUP_DELETE, ['groupids' => $dto->groupIds]);
 
         return new DeleteHostGroupResponseDto();
     }
@@ -115,7 +133,16 @@ final class HostGroup extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::HOSTGROUP_MASSADD, $params);
 
-        return new MassAddHostGroupResponseDto($result['groupids'] ?? []);
+        $groupids = [];
+        if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
+            foreach ($result['groupids'] as $id) {
+                if (is_string($id)) {
+                    $groupids[] = $id;
+                }
+            }
+        }
+
+        return new MassAddHostGroupResponseDto($groupids);
     }
 
     public function massRemove(MassRemoveHostGroupDto $dto): MassRemoveHostGroupResponseDto
@@ -124,7 +151,16 @@ final class HostGroup extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::HOSTGROUP_MASSREMOVE, $params);
 
-        return new MassRemoveHostGroupResponseDto($result['groupids'] ?? []);
+        $groupids = [];
+        if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
+            foreach ($result['groupids'] as $id) {
+                if (is_string($id)) {
+                    $groupids[] = $id;
+                }
+            }
+        }
+
+        return new MassRemoveHostGroupResponseDto($groupids);
     }
 
     public function massUpdate(MassUpdateHostGroupDto $dto): MassUpdateHostGroupResponseDto
@@ -133,7 +169,16 @@ final class HostGroup extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::HOSTGROUP_MASSUPDATE, $params);
 
-        return new MassUpdateHostGroupResponseDto($result['groupids'] ?? []);
+        $groupids = [];
+        if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
+            foreach ($result['groupids'] as $id) {
+                if (is_string($id)) {
+                    $groupids[] = $id;
+                }
+            }
+        }
+
+        return new MassUpdateHostGroupResponseDto($groupids);
     }
 
     private function mapCreateHostGroup(array $hostGroup): array

@@ -17,6 +17,9 @@ final class AuditLog extends AbstractAction
         return 'auditlog';
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function get(array $params): GetAuditLogResponseDto
     {
         $processedParams = $this->processParams($params);
