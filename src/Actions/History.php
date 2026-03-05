@@ -271,7 +271,7 @@ final class History extends AbstractAction
             $historyData,
         );
 
-        $result = $this->client->call(ZabbixAction::HISTORY_PUSH, ['data' => $items]);
+        $result = $this->client->call(ZabbixAction::HISTORY_PUSH, $items);
 
         return PushHistoryResponseDto::fromArray(is_array($result) ? $result : []);
     }

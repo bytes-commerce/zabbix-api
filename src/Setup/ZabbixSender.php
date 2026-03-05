@@ -36,12 +36,10 @@ final readonly class ZabbixSender implements ZabbixSenderInterface
 
         try {
             $this->client->call(ZabbixAction::HISTORY_PUSH, [
-                'data' => [
-                    [
-                        'itemid' => $itemId,
-                        'clock' => $clock,
-                        'value' => (string) $value,
-                    ],
+                [
+                    'itemid' => $itemId,
+                    'clock' => $clock,
+                    'value' => (string) $value,
                 ],
             ]);
         } catch (Throwable $e) {
@@ -69,12 +67,10 @@ final readonly class ZabbixSender implements ZabbixSenderInterface
             $jsonPayload = json_encode($payload, \JSON_THROW_ON_ERROR | \JSON_UNESCAPED_SLASHES | \JSON_UNESCAPED_UNICODE);
 
             $this->client->call(ZabbixAction::HISTORY_PUSH, [
-                'data' => [
-                    [
-                        'itemid' => $itemId,
-                        'clock' => $clock,
-                        'value' => $jsonPayload,
-                    ],
+                [
+                    'itemid' => $itemId,
+                    'clock' => $clock,
+                    'value' => $jsonPayload,
                 ],
             ]);
         } catch (JsonException $e) {

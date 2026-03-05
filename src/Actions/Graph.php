@@ -42,7 +42,7 @@ final class Graph extends AbstractAction
     {
         $graphs = array_map($this->mapCreateGraph(...), $dto->graphs);
 
-        $result = $this->client->call(ZabbixAction::GRAPH_CREATE, ['graphs' => $graphs]);
+        $result = $this->client->call(ZabbixAction::GRAPH_CREATE, $graphs);
 
         $graphids = [];
         if (is_array($result) && isset($result['graphids']) && is_array($result['graphids'])) {
@@ -60,7 +60,7 @@ final class Graph extends AbstractAction
     {
         $graphs = array_map($this->mapUpdateGraph(...), $dto->graphs);
 
-        $result = $this->client->call(ZabbixAction::GRAPH_UPDATE, ['graphs' => $graphs]);
+        $result = $this->client->call(ZabbixAction::GRAPH_UPDATE, $graphs);
 
         $graphids = [];
         if (is_array($result) && isset($result['graphids']) && is_array($result['graphids'])) {
@@ -76,7 +76,7 @@ final class Graph extends AbstractAction
 
     public function delete(DeleteGraphDto $dto): DeleteGraphResponseDto
     {
-        $this->client->call(ZabbixAction::GRAPH_DELETE, ['graphids' => $dto->graphIds]);
+        $this->client->call(ZabbixAction::GRAPH_DELETE, $dto->graphIds);
 
         return new DeleteGraphResponseDto();
     }

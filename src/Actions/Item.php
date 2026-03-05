@@ -37,19 +37,19 @@ final class Item extends AbstractAction
     {
         $items = array_map($this->mapCreateItem(...), $dto->items);
 
-        return $this->client->call(ZabbixAction::ITEM_CREATE, ['items' => $items]);
+        return $this->client->call(ZabbixAction::ITEM_CREATE, $items);
     }
 
     public function update(UpdateItemDto $dto): mixed
     {
         $items = array_map($this->mapUpdateItem(...), $dto->items);
 
-        return $this->client->call(ZabbixAction::ITEM_UPDATE, ['items' => $items]);
+        return $this->client->call(ZabbixAction::ITEM_UPDATE, $items);
     }
 
     public function delete(DeleteItemDto $dto): mixed
     {
-        return $this->client->call(ZabbixAction::ITEM_DELETE, ['itemids' => $dto->itemIds]);
+        return $this->client->call(ZabbixAction::ITEM_DELETE, $dto->itemIds);
     }
 
     private function mapCreateItem(CreateSingleItemDto $item): array

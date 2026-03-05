@@ -45,7 +45,7 @@ final class Trigger extends AbstractAction
             }
         }
 
-        return $this->client->call(ZabbixAction::TRIGGER_CREATE, ['triggers' => $triggers]);
+        return $this->client->call(ZabbixAction::TRIGGER_CREATE, $triggers);
     }
 
     /**
@@ -59,7 +59,7 @@ final class Trigger extends AbstractAction
             }
         }
 
-        return $this->client->call(ZabbixAction::TRIGGER_UPDATE, ['triggers' => $triggers]);
+        return $this->client->call(ZabbixAction::TRIGGER_UPDATE, $triggers);
     }
 
     /**
@@ -67,6 +67,6 @@ final class Trigger extends AbstractAction
      */
     public function delete(array $triggerIds): mixed
     {
-        return $this->client->call(ZabbixAction::TRIGGER_DELETE, ['triggerids' => $triggerIds]);
+        return $this->client->call(ZabbixAction::TRIGGER_DELETE, $triggerIds);
     }
 }

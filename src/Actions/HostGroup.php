@@ -52,7 +52,7 @@ final class HostGroup extends AbstractAction
     {
         $params = array_map($this->mapCreateHostGroup(...), $dto->hostGroups);
 
-        $result = $this->client->call(ZabbixAction::HOSTGROUP_CREATE, ['groups' => $params]);
+        $result = $this->client->call(ZabbixAction::HOSTGROUP_CREATE, $params);
 
         $groupids = [];
         if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
@@ -70,7 +70,7 @@ final class HostGroup extends AbstractAction
     {
         $params = array_map($this->mapUpdateHostGroup(...), $dto->hostGroups);
 
-        $result = $this->client->call(ZabbixAction::HOSTGROUP_UPDATE, ['groups' => $params]);
+        $result = $this->client->call(ZabbixAction::HOSTGROUP_UPDATE, $params);
 
         $groupids = [];
         if (is_array($result) && isset($result['groupids']) && is_array($result['groupids'])) {
@@ -86,7 +86,7 @@ final class HostGroup extends AbstractAction
 
     public function delete(DeleteHostGroupDto $dto): DeleteHostGroupResponseDto
     {
-        $this->client->call(ZabbixAction::HOSTGROUP_DELETE, ['groupids' => $dto->groupIds]);
+        $this->client->call(ZabbixAction::HOSTGROUP_DELETE, $dto->groupIds);
 
         return new DeleteHostGroupResponseDto();
     }

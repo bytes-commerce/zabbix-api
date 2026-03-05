@@ -42,7 +42,7 @@ final class Dashboard extends AbstractAction
             $params[] = $this->mapCreateDashboard($dashboard);
         }
 
-        $result = $this->client->call(ZabbixAction::DASHBOARD_CREATE, ['dashboards' => $params]);
+        $result = $this->client->call(ZabbixAction::DASHBOARD_CREATE, $params);
         Assert::isArray($result);
         Assert::keyExists($result, 'dashboardids');
         Assert::isList($result['dashboardids']);
@@ -60,7 +60,7 @@ final class Dashboard extends AbstractAction
             $params[] = $this->mapUpdateDashboard($dashboard);
         }
 
-        $result = $this->client->call(ZabbixAction::DASHBOARD_UPDATE, ['dashboards' => $params]);
+        $result = $this->client->call(ZabbixAction::DASHBOARD_UPDATE, $params);
         Assert::isArray($result);
         Assert::keyExists($result, 'dashboardids');
         Assert::isList($result['dashboardids']);
@@ -73,7 +73,7 @@ final class Dashboard extends AbstractAction
 
     public function delete(DeleteDashboardDto $dto): DeleteDashboardResponseDto
     {
-        $this->client->call(ZabbixAction::DASHBOARD_DELETE, ['dashboardids' => $dto->dashboardIds]);
+        $this->client->call(ZabbixAction::DASHBOARD_DELETE, $dto->dashboardIds);
 
         return new DeleteDashboardResponseDto();
     }

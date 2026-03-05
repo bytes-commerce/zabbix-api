@@ -134,7 +134,7 @@ final class ZabbixClient implements ZabbixClientInterface
     }
 
     /**
-     * @param array<string, mixed> $params
+     * @param array<int|string, mixed> $params
      */
     private function executeApiCall(ZabbixAction $action, array $params, ?string $authToken): mixed
     {

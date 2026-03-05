@@ -44,7 +44,7 @@ final class Host extends AbstractAction
             }
         }
 
-        return $this->client->call(ZabbixAction::HOST_CREATE, ['hosts' => $hosts]);
+        return $this->client->call(ZabbixAction::HOST_CREATE, $hosts);
     }
 
     /**
@@ -61,7 +61,7 @@ final class Host extends AbstractAction
             }
         }
 
-        return $this->client->call(ZabbixAction::HOST_UPDATE, ['hosts' => $hosts]);
+        return $this->client->call(ZabbixAction::HOST_UPDATE, $hosts);
     }
 
     /**
@@ -69,7 +69,7 @@ final class Host extends AbstractAction
      */
     public function delete(array $hostIds): mixed
     {
-        return $this->client->call(ZabbixAction::HOST_DELETE, ['hostids' => $hostIds]);
+        return $this->client->call(ZabbixAction::HOST_DELETE, $hostIds);
     }
 
     /**
