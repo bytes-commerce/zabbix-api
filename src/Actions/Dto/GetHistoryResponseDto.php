@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetHistoryResponseDto
 {
     /**
-     * @param HistoryDto[] $history
+     * @param list<HistoryDto> $history
      */
     public function __construct(
         public array $history,
@@ -16,13 +16,18 @@ final readonly class GetHistoryResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            history: array_map(HistoryDto::fromArray(...), $data),
-        );
+        $history = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $history[] = HistoryDto::fromArray($item);
+            }
+        }
+
+        return new self(history: $history);
     }
 
     /**
-     * @return HistoryDto[]
+     * @return list<HistoryDto>
      */
     public function getHistory(): array
     {

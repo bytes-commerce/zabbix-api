@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class GraphDto
 {
     /**
@@ -33,28 +35,114 @@ final readonly class GraphDto
 
     public static function fromArray(array $data): self
     {
-        $gitems = isset($data['gitems']) && is_array($data['gitems'])
-            ? array_map(GraphItemDto::fromArray(...), $data['gitems'])
-            : [];
+        Assert::string($data['graphid'] ?? null);
+        Assert::string($data['name'] ?? null);
+
+        $gitems = [];
+        if (isset($data['gitems']) && is_array($data['gitems'])) {
+            foreach ($data['gitems'] as $itemData) {
+                if (is_array($itemData)) {
+                    $gitems[] = GraphItemDto::fromArray($itemData);
+                }
+            }
+        }
+
+        $width = null;
+        if (isset($data['width'])) {
+            Assert::integerish($data['width']);
+            $width = (int) $data['width'];
+        }
+
+        $height = null;
+        if (isset($data['height'])) {
+            Assert::integerish($data['height']);
+            $height = (int) $data['height'];
+        }
+
+        $yaxismin = null;
+        if (isset($data['yaxismin'])) {
+            Assert::numeric($data['yaxismin']);
+            $yaxismin = (float) $data['yaxismin'];
+        }
+
+        $yaxismax = null;
+        if (isset($data['yaxismax'])) {
+            Assert::numeric($data['yaxismax']);
+            $yaxismax = (float) $data['yaxismax'];
+        }
+
+        $showWorkPeriod = null;
+        if (isset($data['show_work_period'])) {
+            Assert::integerish($data['show_work_period']);
+            $showWorkPeriod = (int) $data['show_work_period'];
+        }
+
+        $showTriggers = null;
+        if (isset($data['show_triggers'])) {
+            Assert::integerish($data['show_triggers']);
+            $showTriggers = (int) $data['show_triggers'];
+        }
+
+        $graphtype = null;
+        if (isset($data['graphtype'])) {
+            Assert::integerish($data['graphtype']);
+            $graphtype = (int) $data['graphtype'];
+        }
+
+        $showLegend = null;
+        if (isset($data['show_legend'])) {
+            Assert::integerish($data['show_legend']);
+            $showLegend = (int) $data['show_legend'];
+        }
+
+        $show3d = null;
+        if (isset($data['show_3d'])) {
+            Assert::integerish($data['show_3d']);
+            $show3d = (int) $data['show_3d'];
+        }
+
+        $percentLeft = null;
+        if (isset($data['percent_left'])) {
+            Assert::numeric($data['percent_left']);
+            $percentLeft = (float) $data['percent_left'];
+        }
+
+        $percentRight = null;
+        if (isset($data['percent_right'])) {
+            Assert::numeric($data['percent_right']);
+            $percentRight = (float) $data['percent_right'];
+        }
+
+        $yminType = null;
+        if (isset($data['ymin_type'])) {
+            Assert::integerish($data['ymin_type']);
+            $yminType = (int) $data['ymin_type'];
+        }
+
+        $ymaxType = null;
+        if (isset($data['ymax_type'])) {
+            Assert::integerish($data['ymax_type']);
+            $ymaxType = (int) $data['ymax_type'];
+        }
 
         return new self(
             graphid: $data['graphid'],
             name: $data['name'],
-            width: isset($data['width']) ? (int) $data['width'] : null,
-            height: isset($data['height']) ? (int) $data['height'] : null,
-            yaxismin: isset($data['yaxismin']) ? (float) $data['yaxismin'] : null,
-            yaxismax: isset($data['yaxismax']) ? (float) $data['yaxismax'] : null,
-            show_work_period: isset($data['show_work_period']) ? (int) $data['show_work_period'] : null,
-            show_triggers: isset($data['show_triggers']) ? (int) $data['show_triggers'] : null,
-            graphtype: isset($data['graphtype']) ? (int) $data['graphtype'] : null,
-            show_legend: isset($data['show_legend']) ? (int) $data['show_legend'] : null,
-            show_3d: isset($data['show_3d']) ? (int) $data['show_3d'] : null,
-            percent_left: isset($data['percent_left']) ? (float) $data['percent_left'] : null,
-            percent_right: isset($data['percent_right']) ? (float) $data['percent_right'] : null,
-            ymin_type: isset($data['ymin_type']) ? (int) $data['ymin_type'] : null,
-            ymax_type: isset($data['ymax_type']) ? (int) $data['ymax_type'] : null,
-            ymin_itemid: $data['ymin_itemid'] ?? null,
-            ymax_itemid: $data['ymax_itemid'] ?? null,
+            width: $width,
+            height: $height,
+            yaxismin: $yaxismin,
+            yaxismax: $yaxismax,
+            show_work_period: $showWorkPeriod,
+            show_triggers: $showTriggers,
+            graphtype: $graphtype,
+            show_legend: $showLegend,
+            show_3d: $show3d,
+            percent_left: $percentLeft,
+            percent_right: $percentRight,
+            ymin_type: $yminType,
+            ymax_type: $ymaxType,
+            ymin_itemid: isset($data['ymin_itemid']) && is_string($data['ymin_itemid']) ? $data['ymin_itemid'] : null,
+            ymax_itemid: isset($data['ymax_itemid']) && is_string($data['ymax_itemid']) ? $data['ymax_itemid'] : null,
             gitems: $gitems,
         );
     }

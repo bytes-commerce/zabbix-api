@@ -16,9 +16,14 @@ final readonly class GetDashboardResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            dashboards: array_map(DashboardDto::fromArray(...), $data),
-        );
+        $dashboards = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $dashboards[] = DashboardDto::fromArray($item);
+            }
+        }
+
+        return new self(dashboards: $dashboards);
     }
 
     /**

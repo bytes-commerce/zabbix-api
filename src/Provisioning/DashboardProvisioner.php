@@ -52,8 +52,19 @@ final readonly class DashboardProvisioner implements DashboardProvisionerInterfa
 
         $hash = $this->specHasher->hash($definition);
 
-        $title = $this->specRenderer->renderTitleTemplate($definition['title_template'], $host);
-        $widgets = $this->specRenderer->renderWidgets($definition['widgets'], $host);
+        $titleTemplate = $definition['title_template'] ?? '';
+        $widgetsDef = $definition['widgets'] ?? [];
+
+        if (!is_string($titleTemplate)) {
+            throw new RuntimeException('Invalid definition: title_template must be a string');
+        }
+
+        if (!is_array($widgetsDef)) {
+            throw new RuntimeException('Invalid definition: widgets must be an array');
+        }
+
+        $title = $this->specRenderer->renderTitleTemplate($titleTemplate, $host);
+        $widgets = $this->specRenderer->renderWidgets($widgetsDef, $host);
 
         $spec = new DashboardSpec(
             name: $title,

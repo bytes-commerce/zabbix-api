@@ -68,10 +68,12 @@ final class RequestTransactionSubscriber implements EventSubscriberInterface
             return;
         }
 
-        $cid = (string) $req->attributes->get('_mon_cid', '');
+        $cidRaw = $req->attributes->get('_mon_cid', '');
+        $cid = is_string($cidRaw) ? $cidRaw : '';
         $durationMs = (hrtime(true) - $start) / 1_000_000;
 
-        $route = (string) ($req->attributes->get('_route') ?? 'unknown');
+        $routeRaw = $req->attributes->get('_route');
+        $route = is_string($routeRaw) ? $routeRaw : 'unknown';
         if (isset($this->excludedRoutes[$route])) {
             return;
         }

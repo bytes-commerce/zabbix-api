@@ -21,6 +21,7 @@ services:
         arguments:
             - '@http_client'
             - '%zabbix_api.base_uri%'
+        autoconfigure: false
 
     BytesCommerce\ZabbixApi\ZabbixClientInterface:
         class: BytesCommerce\ZabbixApi\ZabbixClient

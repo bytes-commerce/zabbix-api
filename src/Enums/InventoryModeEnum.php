@@ -2,7 +2,7 @@
 
 declare(strict_types=1);
 
-namespace BytesCommerce\ZabbixApi\Zabbix;
+namespace BytesCommerce\ZabbixApi\Enums;
 
 enum InventoryModeEnum: int
 {

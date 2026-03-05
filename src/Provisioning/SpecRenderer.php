@@ -36,13 +36,30 @@ final readonly class SpecRenderer
     {
         $result = [];
 
+        $search = array_keys($replacements);
+        $replace = array_values($replacements);
+
+        $searchStrings = [];
+        foreach ($search as $s) {
+            if (is_string($s)) {
+                $searchStrings[] = $s;
+            }
+        }
+
+        $replaceStrings = [];
+        foreach ($replace as $r) {
+            if (is_string($r)) {
+                $replaceStrings[] = $r;
+            }
+        }
+
         foreach ($data as $key => $value) {
             if (\is_array($value)) {
                 $result[$key] = $this->renderArray($value, $replacements);
             } elseif (\is_string($value)) {
                 $result[$key] = str_replace(
-                    array_keys($replacements),
-                    array_values($replacements),
+                    $searchStrings,
+                    $replaceStrings,
                     $value,
                 );
             } else {

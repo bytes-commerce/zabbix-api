@@ -74,7 +74,7 @@ final readonly class SecurityAuthSubscriber implements EventSubscriberInterface
     private function extractUserId(mixed $user): string
     {
         if (!\is_object($user)) {
-            return (string) $user;
+            return is_string($user) ? $user : 'unknown';
         }
 
         if (method_exists($user, 'getId')) {
@@ -85,7 +85,8 @@ final readonly class SecurityAuthSubscriber implements EventSubscriberInterface
         }
 
         if (method_exists($user, 'getUserIdentifier')) {
-            return (string) $user->getUserIdentifier();
+            $identifier = $user->getUserIdentifier();
+            return is_string($identifier) ? $identifier : 'unknown';
         }
 
         return 'unknown';
@@ -95,7 +96,8 @@ final readonly class SecurityAuthSubscriber implements EventSubscriberInterface
     {
         if (\is_object($user)) {
             if (method_exists($user, 'getUserIdentifier')) {
-                return (string) $user->getUserIdentifier();
+                $identifier = $user->getUserIdentifier();
+                return is_string($identifier) ? $identifier : 'unknown';
             }
 
             if (method_exists($user, 'getId')) {

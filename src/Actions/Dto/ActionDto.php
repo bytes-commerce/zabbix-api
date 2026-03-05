@@ -6,6 +6,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
 use BytesCommerce\ZabbixApi\Enums\EventSourceEnum;
 use BytesCommerce\ZabbixApi\Enums\StatusEnum;
+use Webmozart\Assert\Assert;
 
 final readonly class ActionDto
 {
@@ -24,16 +25,27 @@ final readonly class ActionDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['actionid'] ?? null);
+        Assert::string($data['name'] ?? null);
+        Assert::integerish($data['eventsource'] ?? null);
+        Assert::string($data['esc_period'] ?? null);
+
+        $status = null;
+        if (isset($data['status'])) {
+            Assert::integerish($data['status']);
+            $status = StatusEnum::from((int) $data['status']);
+        }
+
         return new self(
             actionid: $data['actionid'],
             name: $data['name'],
-            eventsource: EventSourceEnum::from($data['eventsource']),
+            eventsource: EventSourceEnum::from((int) $data['eventsource']),
             esc_period: $data['esc_period'],
-            status: isset($data['status']) ? StatusEnum::from($data['status']) : null,
-            filter: $data['filter'] ?? null,
-            operations: $data['operations'] ?? null,
-            recovery_operations: $data['recovery_operations'] ?? null,
-            update_operations: $data['update_operations'] ?? null,
+            status: $status,
+            filter: isset($data['filter']) && is_array($data['filter']) ? $data['filter'] : null,
+            operations: isset($data['operations']) && is_array($data['operations']) ? $data['operations'] : null,
+            recovery_operations: isset($data['recovery_operations']) && is_array($data['recovery_operations']) ? $data['recovery_operations'] : null,
+            update_operations: isset($data['update_operations']) && is_array($data['update_operations']) ? $data['update_operations'] : null,
         );
     }
 

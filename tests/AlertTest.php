@@ -27,7 +27,21 @@ final class AlertTest extends TestCase
     {
         $params = ['userids' => '5'];
         $expectedParams = ['userids' => '5', 'output' => 'extend'];
-        $expectedResult = [['alertid' => '1', 'subject' => 'Test Alert']];
+        $expectedResult = [[
+            'alertid' => '1',
+            'actionid' => '10',
+            'eventid' => '100',
+            'userid' => '5',
+            'clock' => 1672531200,
+            'mediatypeid' => 1,
+            'sendto' => 'admin@example.com',
+            'subject' => 'Test Alert',
+            'message' => 'Test Message',
+            'status' => 0,
+            'retries' => 0,
+            'error' => '',
+            'esc_step' => 1,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -42,7 +56,21 @@ final class AlertTest extends TestCase
     public function testGetWithCustomOutput(): void
     {
         $params = ['output' => ['alertid', 'subject', 'message'], 'status' => 1];
-        $expectedResult = [['alertid' => '1', 'subject' => 'Test Alert', 'message' => 'Test Message']];
+        $expectedResult = [[
+            'alertid' => '1',
+            'actionid' => '10',
+            'eventid' => '100',
+            'userid' => '5',
+            'clock' => 1672531200,
+            'mediatypeid' => 1,
+            'sendto' => 'admin@example.com',
+            'subject' => 'Test Alert',
+            'message' => 'Test Message',
+            'status' => 1,
+            'retries' => 0,
+            'error' => '',
+            'esc_step' => 1,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -60,7 +88,21 @@ final class AlertTest extends TestCase
         $timeTill = new DateTime('2023-01-02 00:00:00');
         $params = ['time_from' => $timeFrom, 'time_till' => $timeTill];
         $expectedParams = ['time_from' => $timeFrom->getTimestamp(), 'time_till' => $timeTill->getTimestamp(), 'output' => 'extend'];
-        $expectedResult = [['alertid' => '1']];
+        $expectedResult = [[
+            'alertid' => '1',
+            'actionid' => '10',
+            'eventid' => '100',
+            'userid' => '5',
+            'clock' => 1672531200,
+            'mediatypeid' => 1,
+            'sendto' => 'admin@example.com',
+            'subject' => 'Test',
+            'message' => 'Test',
+            'status' => 0,
+            'retries' => 0,
+            'error' => '',
+            'esc_step' => 1,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -76,7 +118,21 @@ final class AlertTest extends TestCase
     {
         $params = ['time_from' => 1672531200, 'time_till' => 1672617600];
         $expectedParams = ['time_from' => 1672531200, 'time_till' => 1672617600, 'output' => 'extend'];
-        $expectedResult = [['alertid' => '1']];
+        $expectedResult = [[
+            'alertid' => '1',
+            'actionid' => '10',
+            'eventid' => '100',
+            'userid' => '5',
+            'clock' => 1672531200,
+            'mediatypeid' => 1,
+            'sendto' => 'admin@example.com',
+            'subject' => 'Test',
+            'message' => 'Test',
+            'status' => 0,
+            'retries' => 0,
+            'error' => '',
+            'esc_step' => 1,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')

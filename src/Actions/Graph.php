@@ -44,7 +44,16 @@ final class Graph extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::GRAPH_CREATE, $graphs);
 
-        return new CreateGraphResponseDto($result['graphids']);
+        $graphids = [];
+        if (is_array($result) && isset($result['graphids']) && is_array($result['graphids'])) {
+            foreach ($result['graphids'] as $id) {
+                if (is_string($id)) {
+                    $graphids[] = $id;
+                }
+            }
+        }
+
+        return new CreateGraphResponseDto($graphids);
     }
 
     public function update(UpdateGraphDto $dto): UpdateGraphResponseDto
@@ -53,7 +62,16 @@ final class Graph extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::GRAPH_UPDATE, $graphs);
 
-        return new UpdateGraphResponseDto($result['graphids']);
+        $graphids = [];
+        if (is_array($result) && isset($result['graphids']) && is_array($result['graphids'])) {
+            foreach ($result['graphids'] as $id) {
+                if (is_string($id)) {
+                    $graphids[] = $id;
+                }
+            }
+        }
+
+        return new UpdateGraphResponseDto($graphids);
     }
 
     public function delete(DeleteGraphDto $dto): DeleteGraphResponseDto

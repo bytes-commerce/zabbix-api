@@ -19,14 +19,29 @@ final readonly class DashboardPageDto
 
     public static function fromArray(array $data): self
     {
-        $widgets = isset($data['widgets']) && is_array($data['widgets'])
-            ? array_map(DashboardWidgetDto::fromArray(...), $data['widgets'])
-            : [];
+        $widgets = [];
+        if (isset($data['widgets']) && is_array($data['widgets'])) {
+            foreach ($data['widgets'] as $widgetData) {
+                if (is_array($widgetData)) {
+                    $widgets[] = DashboardWidgetDto::fromArray($widgetData);
+                }
+            }
+        }
+
+        $displayPeriod = null;
+        if (isset($data['display_period'])) {
+            $displayPeriod = is_int($data['display_period']) ? $data['display_period'] : null;
+        }
+
+        $sortorder = null;
+        if (isset($data['sortorder'])) {
+            $sortorder = is_int($data['sortorder']) ? $data['sortorder'] : null;
+        }
 
         return new self(
-            name: $data['name'] ?? null,
-            display_period: isset($data['display_period']) ? (int) $data['display_period'] : null,
-            sortorder: isset($data['sortorder']) ? (int) $data['sortorder'] : null,
+            name: isset($data['name']) && is_string($data['name']) ? $data['name'] : null,
+            display_period: $displayPeriod,
+            sortorder: $sortorder,
             widgets: $widgets,
         );
     }

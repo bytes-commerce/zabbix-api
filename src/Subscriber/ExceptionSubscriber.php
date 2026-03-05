@@ -37,7 +37,7 @@ final class ExceptionSubscriber implements EventSubscriberInterface
                 $excluded[] = $class;
             }
         }
-        $this->excludedExceptionClasses = array_unique($excluded);
+        $this->excludedExceptionClasses = array_values(array_unique($excluded));
     }
 
     public static function getSubscribedEvents(): array
@@ -50,8 +50,10 @@ final class ExceptionSubscriber implements EventSubscriberInterface
     public function onException(ExceptionEvent $event): void
     {
         $req = $event->getRequest();
-        $cid = (string) $req->attributes->get('_mon_cid', '');
-        $route = (string) ($req->attributes->get('_route') ?? 'unknown');
+        $cidRaw = $req->attributes->get('_mon_cid', '');
+        $cid = is_string($cidRaw) ? $cidRaw : '';
+        $routeRaw = $req->attributes->get('_route');
+        $route = is_string($routeRaw) ? $routeRaw : 'unknown';
 
         $exception = $event->getThrowable();
 

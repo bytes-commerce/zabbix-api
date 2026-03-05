@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class AlertDto
 {
     public function __construct(
@@ -27,22 +29,36 @@ final readonly class AlertDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['alertid'] ?? null);
+        Assert::string($data['actionid'] ?? null);
+        Assert::string($data['eventid'] ?? null);
+        Assert::string($data['userid'] ?? null);
+        Assert::integerish($data['clock'] ?? null);
+        Assert::integerish($data['mediatypeid'] ?? null);
+        Assert::string($data['sendto'] ?? null);
+        Assert::string($data['subject'] ?? null);
+        Assert::string($data['message'] ?? null);
+        Assert::integerish($data['status'] ?? null);
+        Assert::integerish($data['retries'] ?? null);
+        Assert::string($data['error'] ?? null);
+        Assert::integerish($data['esc_step'] ?? null);
+
         return new self(
             alertid: $data['alertid'],
             actionid: $data['actionid'],
             eventid: $data['eventid'],
             userid: $data['userid'],
-            clock: $data['clock'],
-            mediatypeid: $data['mediatypeid'],
+            clock: (int) $data['clock'],
+            mediatypeid: (int) $data['mediatypeid'],
             sendto: $data['sendto'],
             subject: $data['subject'],
             message: $data['message'],
-            status: $data['status'],
-            retries: $data['retries'],
+            status: (int) $data['status'],
+            retries: (int) $data['retries'],
             error: $data['error'],
-            esc_step: $data['esc_step'],
-            alerttype: $data['alerttype'] ?? null,
-            p_eventid: $data['p_eventid'] ?? null,
+            esc_step: (int) $data['esc_step'],
+            alerttype: isset($data['alerttype']) && is_string($data['alerttype']) ? $data['alerttype'] : null,
+            p_eventid: isset($data['p_eventid']) && is_string($data['p_eventid']) ? $data['p_eventid'] : null,
         );
     }
 

@@ -16,9 +16,14 @@ final readonly class GetHostGroupResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            hostGroups: array_map(HostGroupDto::fromArray(...), $data),
-        );
+        $hostGroups = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $hostGroups[] = HostGroupDto::fromArray($item);
+            }
+        }
+
+        return new self(hostGroups: $hostGroups);
     }
 
     /**

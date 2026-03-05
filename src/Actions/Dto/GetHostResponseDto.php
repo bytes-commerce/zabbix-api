@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetHostResponseDto
 {
     /**
-     * @param HostDto[] $hosts
+     * @param list<HostDto> $hosts
      */
     public function __construct(
         public array $hosts,
@@ -16,8 +16,13 @@ final readonly class GetHostResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            hosts: array_map(HostDto::fromArray(...), $data),
-        );
+        $hosts = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $hosts[] = HostDto::fromArray($item);
+            }
+        }
+
+        return new self(hosts: $hosts);
     }
 }

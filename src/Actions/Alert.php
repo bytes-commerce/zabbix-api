@@ -8,6 +8,7 @@ use BytesCommerce\ZabbixApi\Actions\Dto\GetAlertResponseDto;
 use BytesCommerce\ZabbixApi\Enums\OutputEnum;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use DateTimeInterface;
+use Webmozart\Assert\Assert;
 
 final class Alert extends AbstractAction
 {
@@ -16,15 +17,23 @@ final class Alert extends AbstractAction
         return 'alert';
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function get(array $params): GetAlertResponseDto
     {
         $processedParams = $this->processParams($params);
 
         $result = $this->client->call(ZabbixAction::ALERT_GET, $processedParams);
+        Assert::isArray($result);
 
         return GetAlertResponseDto::fromArray($result);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
+     */
     private function processParams(array $params): array
     {
         if (!isset($params['output'])) {

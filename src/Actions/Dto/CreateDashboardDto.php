@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class CreateDashboardDto
 {
     /**
-     * @param list<array{name: string, pages?: list<array{name?: string, widgets?: list<array{type: string, name?: string, x?: int, y?: int, width?: int, height?: int, fields?: array<string, mixed>, view_mode?: string}>}> $dashboards
+     * @param list<array<string, mixed>> $dashboards
      */
     public function __construct(
         public array $dashboards,
@@ -15,7 +15,7 @@ final readonly class CreateDashboardDto
     }
 
     /**
-     * @return list<array{name: string, pages?: list<array{name?: string, widgets?: list<array{type: string, name?: string, x?: int, y?: int, width?: int, height?: int, fields?: array<string, mixed>, view_mode?: string}>}>
+     * @return list<array<string, mixed>>
      */
     public function getDashboards(): array
     {

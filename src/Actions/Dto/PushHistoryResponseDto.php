@@ -17,9 +17,16 @@ final readonly class PushHistoryResponseDto
 
     public static function fromArray(array $data): self
     {
-        $historyids = isset($data['historyids']) && is_array($data['historyids'])
-            ? array_map(static fn (mixed $id): string => (string) $id, $data['historyids'])
-            : [];
+        $historyids = [];
+        if (isset($data['historyids']) && is_array($data['historyids'])) {
+            foreach ($data['historyids'] as $id) {
+                if (is_string($id)) {
+                    $historyids[] = $id;
+                } elseif (is_int($id)) {
+                    $historyids[] = (string) $id;
+                }
+            }
+        }
 
         return new self(
             historyids: $historyids,
