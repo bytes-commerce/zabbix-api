@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetTriggerResponseDto
 {
     /**
-     * @param TriggerDto[] $triggers
+     * @param list<TriggerDto> $triggers
      */
     public function __construct(
         public array $triggers,
@@ -16,8 +16,13 @@ final readonly class GetTriggerResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            triggers: array_map(TriggerDto::fromArray(...), $data),
-        );
+        $triggers = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $triggers[] = TriggerDto::fromArray($item);
+            }
+        }
+
+        return new self(triggers: $triggers);
     }
 }

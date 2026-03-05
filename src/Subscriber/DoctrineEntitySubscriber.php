@@ -41,7 +41,7 @@ final class DoctrineEntitySubscriber
                 $excluded[] = $class;
             }
         }
-        $this->excludedEntityClasses = array_unique($excluded);
+        $this->excludedEntityClasses = array_values(array_unique($excluded));
     }
 
     public function postPersist(PostPersistEventArgs $event): void

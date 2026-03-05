@@ -42,9 +42,10 @@ final class Action extends AbstractAction
     {
         $actions = array_map($this->mapCreateAction(...), $dto->actions);
 
-        $result = $this->client->call(ZabbixAction::ACTION_CREATE, $actions);
+        $result = $this->client->call(ZabbixAction::ACTION_CREATE, ['actions' => $actions]);
         Assert::isArray($result);
         Assert::keyExists($result, 'actionids');
+        Assert::isArray($result['actionids']);
 
         return new CreateActionResponseDto($result['actionids']);
     }
@@ -53,16 +54,17 @@ final class Action extends AbstractAction
     {
         $actions = array_map($this->mapUpdateAction(...), $dto->actions);
 
-        $result = $this->client->call(ZabbixAction::ACTION_UPDATE, $actions);
+        $result = $this->client->call(ZabbixAction::ACTION_UPDATE, ['actions' => $actions]);
         Assert::isArray($result);
         Assert::keyExists($result, 'actionids');
+        Assert::isArray($result['actionids']);
 
         return new UpdateActionResponseDto($result['actionids']);
     }
 
     public function delete(DeleteActionDto $dto): DeleteActionResponseDto
     {
-        $this->client->call(ZabbixAction::ACTION_DELETE, $dto->actionIds);
+        $this->client->call(ZabbixAction::ACTION_DELETE, ['actionids' => $dto->actionIds]);
 
         return new DeleteActionResponseDto();
     }

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class AuditLogDto
 {
     public function __construct(
@@ -22,17 +24,25 @@ final readonly class AuditLogDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['auditid'] ?? null);
+        Assert::string($data['userid'] ?? null);
+        Assert::integerish($data['clock'] ?? null);
+        Assert::string($data['action'] ?? null);
+        Assert::string($data['resourcetype'] ?? null);
+        Assert::string($data['resourceid'] ?? null);
+        Assert::string($data['resourcename'] ?? null);
+
         return new self(
             auditid: $data['auditid'],
             userid: $data['userid'],
-            clock: $data['clock'],
+            clock: (int) $data['clock'],
             action: $data['action'],
             resourcetype: $data['resourcetype'],
             resourceid: $data['resourceid'],
             resourcename: $data['resourcename'],
-            details: $data['details'] ?? null,
-            ip: $data['ip'] ?? null,
-            resource_cuid: $data['resource_cuid'] ?? null,
+            details: isset($data['details']) && is_string($data['details']) ? $data['details'] : null,
+            ip: isset($data['ip']) && is_string($data['ip']) ? $data['ip'] : null,
+            resource_cuid: isset($data['resource_cuid']) && is_string($data['resource_cuid']) ? $data['resource_cuid'] : null,
         );
     }
 

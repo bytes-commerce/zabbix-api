@@ -4,9 +4,10 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use BytesCommerce\ZabbixApi\Enums\ItemTypeEnum;
 use BytesCommerce\ZabbixApi\Enums\StatusEnum;
-use BytesCommerce\ZabbixApi\ItemTypeEnum;
-use BytesCommerce\ZabbixApi\ValueTypeEnum;
+use BytesCommerce\ZabbixApi\Enums\ValueTypeEnum;
+use Webmozart\Assert\Assert;
 
 final readonly class ItemDto
 {
@@ -27,18 +28,32 @@ final readonly class ItemDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['itemid'] ?? null);
+        Assert::string($data['name'] ?? null);
+        Assert::string($data['key_'] ?? null);
+        Assert::string($data['hostid'] ?? null);
+        Assert::integerish($data['type'] ?? null);
+        Assert::integerish($data['value_type'] ?? null);
+        Assert::string($data['delay'] ?? null);
+
+        $status = null;
+        if (isset($data['status'])) {
+            Assert::integerish($data['status']);
+            $status = StatusEnum::from((int) $data['status']);
+        }
+
         return new self(
             itemid: $data['itemid'],
             name: $data['name'],
             key_: $data['key_'],
             hostid: $data['hostid'],
-            type: ItemTypeEnum::from($data['type']),
-            value_type: ValueTypeEnum::from($data['value_type']),
+            type: ItemTypeEnum::from((int) $data['type']),
+            value_type: ValueTypeEnum::from((int) $data['value_type']),
             delay: $data['delay'],
-            interfaceid: $data['interfaceid'] ?? null,
-            preprocessing: $data['preprocessing'] ?? null,
-            tags: $data['tags'] ?? null,
-            status: isset($data['status']) ? StatusEnum::from($data['status']) : null,
+            interfaceid: isset($data['interfaceid']) && is_string($data['interfaceid']) ? $data['interfaceid'] : null,
+            preprocessing: isset($data['preprocessing']) && is_array($data['preprocessing']) ? $data['preprocessing'] : null,
+            tags: isset($data['tags']) && is_array($data['tags']) ? $data['tags'] : null,
+            status: $status,
         );
     }
 

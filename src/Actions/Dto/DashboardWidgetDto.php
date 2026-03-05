@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class DashboardWidgetDto
 {
     /**
@@ -23,15 +25,41 @@ final readonly class DashboardWidgetDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['type'] ?? null);
+
+        $x = null;
+        if (isset($data['x'])) {
+            Assert::integerish($data['x']);
+            $x = (int) $data['x'];
+        }
+
+        $y = null;
+        if (isset($data['y'])) {
+            Assert::integerish($data['y']);
+            $y = (int) $data['y'];
+        }
+
+        $width = null;
+        if (isset($data['width'])) {
+            Assert::integerish($data['width']);
+            $width = (int) $data['width'];
+        }
+
+        $height = null;
+        if (isset($data['height'])) {
+            Assert::integerish($data['height']);
+            $height = (int) $data['height'];
+        }
+
         return new self(
             type: $data['type'],
-            name: $data['name'] ?? null,
-            x: isset($data['x']) ? (int) $data['x'] : null,
-            y: isset($data['y']) ? (int) $data['y'] : null,
-            width: isset($data['width']) ? (int) $data['width'] : null,
-            height: isset($data['height']) ? (int) $data['height'] : null,
-            fields: $data['fields'] ?? null,
-            view_mode: $data['view_mode'] ?? null,
+            name: isset($data['name']) && is_string($data['name']) ? $data['name'] : null,
+            x: $x,
+            y: $y,
+            width: $width,
+            height: $height,
+            fields: isset($data['fields']) && is_array($data['fields']) ? $data['fields'] : null,
+            view_mode: isset($data['view_mode']) && is_string($data['view_mode']) ? $data['view_mode'] : null,
         );
     }
 

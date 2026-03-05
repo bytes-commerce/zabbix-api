@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetAuditLogResponseDto
 {
     /**
-     * @param AuditLogDto[] $auditlogs
+     * @param list<AuditLogDto> $auditlogs
      */
     public function __construct(
         public array $auditlogs,
@@ -16,8 +16,13 @@ final readonly class GetAuditLogResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            auditlogs: array_map(AuditLogDto::fromArray(...), $data),
-        );
+        $auditlogs = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $auditlogs[] = AuditLogDto::fromArray($item);
+            }
+        }
+
+        return new self(auditlogs: $auditlogs);
     }
 }

@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
 use BytesCommerce\ZabbixApi\Enums\StatusEnum;
+use Webmozart\Assert\Assert;
 
 final readonly class HostDto
 {
@@ -23,16 +24,20 @@ final readonly class HostDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['hostid'] ?? null);
+        Assert::string($data['host'] ?? null);
+        Assert::integerish($data['status'] ?? null);
+
         return new self(
             hostid: $data['hostid'],
             host: $data['host'],
-            name: $data['name'] ?? null,
-            status: StatusEnum::from($data['status']),
-            interfaces: $data['interfaces'] ?? null,
-            groups: $data['groups'] ?? null,
-            templates: $data['templates'] ?? null,
-            macros: $data['macros'] ?? null,
-            tags: $data['tags'] ?? null,
+            name: isset($data['name']) && is_string($data['name']) ? $data['name'] : null,
+            status: StatusEnum::from((int) $data['status']),
+            interfaces: isset($data['interfaces']) && is_array($data['interfaces']) ? $data['interfaces'] : null,
+            groups: isset($data['groups']) && is_array($data['groups']) ? $data['groups'] : null,
+            templates: isset($data['templates']) && is_array($data['templates']) ? $data['templates'] : null,
+            macros: isset($data['macros']) && is_array($data['macros']) ? $data['macros'] : null,
+            tags: isset($data['tags']) && is_array($data['tags']) ? $data['tags'] : null,
         );
     }
 

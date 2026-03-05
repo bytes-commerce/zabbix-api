@@ -33,7 +33,14 @@ final readonly class ActionService implements ActionServiceInterface
         $method = $input['method'] ?? 'get';
         $params = $input['params'] ?? $input;
 
-        $actionString = sprintf('%s.%s', $base, (string) $method);
+        if (!is_string($method)) {
+            throw new ZabbixApiException(
+                'Method must be a string',
+                -1,
+            );
+        }
+
+        $actionString = sprintf('%s.%s', $base, $method);
 
         try {
             $action = ZabbixAction::from($actionString);
@@ -46,6 +53,13 @@ final readonly class ActionService implements ActionServiceInterface
             );
         }
 
-        return $this->zabbixClient->call($action, is_array($params) ? $params : []);
+        if (!is_array($params)) {
+            throw new ZabbixApiException(
+                'Params must be an array',
+                -1,
+            );
+        }
+
+        return $this->zabbixClient->call($action, $params);
     }
 }

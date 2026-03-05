@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class HostGroupDto
 {
     public function __construct(
@@ -16,11 +18,26 @@ final readonly class HostGroupDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['groupid'] ?? null);
+        Assert::string($data['name'] ?? null);
+
+        $flags = null;
+        if (isset($data['flags'])) {
+            Assert::integerish($data['flags']);
+            $flags = (int) $data['flags'];
+        }
+
+        $internal = null;
+        if (isset($data['internal'])) {
+            Assert::integerish($data['internal']);
+            $internal = (int) $data['internal'];
+        }
+
         return new self(
             groupid: $data['groupid'],
             name: $data['name'],
-            flags: isset($data['flags']) ? (int) $data['flags'] : null,
-            internal: isset($data['internal']) ? (int) $data['internal'] : null,
+            flags: $flags,
+            internal: $internal,
         );
     }
 

@@ -8,6 +8,7 @@ use BytesCommerce\ZabbixApi\Actions\Dto\GetAuditLogResponseDto;
 use BytesCommerce\ZabbixApi\Enums\OutputEnum;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
 use DateTimeInterface;
+use Webmozart\Assert\Assert;
 
 final class AuditLog extends AbstractAction
 {
@@ -21,10 +22,15 @@ final class AuditLog extends AbstractAction
         $processedParams = $this->processParams($params);
 
         $result = $this->client->call(ZabbixAction::AUDITLOG_GET, $processedParams);
+        Assert::isArray($result);
 
         return GetAuditLogResponseDto::fromArray($result);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     * @return array<string, mixed>
+     */
     private function processParams(array $params): array
     {
         if (!isset($params['output'])) {

@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class GraphItemDto
 {
     public function __construct(
@@ -20,15 +22,48 @@ final readonly class GraphItemDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['gitemid'] ?? null);
+        Assert::string($data['itemid'] ?? null);
+
+        $drawtype = null;
+        if (isset($data['drawtype'])) {
+            Assert::integerish($data['drawtype']);
+            $drawtype = (int) $data['drawtype'];
+        }
+
+        $sortorder = null;
+        if (isset($data['sortorder'])) {
+            Assert::integerish($data['sortorder']);
+            $sortorder = (int) $data['sortorder'];
+        }
+
+        $yaxisside = null;
+        if (isset($data['yaxisside'])) {
+            Assert::integerish($data['yaxisside']);
+            $yaxisside = (int) $data['yaxisside'];
+        }
+
+        $calcFnc = null;
+        if (isset($data['calc_fnc'])) {
+            Assert::integerish($data['calc_fnc']);
+            $calcFnc = (int) $data['calc_fnc'];
+        }
+
+        $type = null;
+        if (isset($data['type'])) {
+            Assert::integerish($data['type']);
+            $type = (int) $data['type'];
+        }
+
         return new self(
             gitemid: $data['gitemid'],
             itemid: $data['itemid'],
-            drawtype: isset($data['drawtype']) ? (int) $data['drawtype'] : null,
-            sortorder: isset($data['sortorder']) ? (int) $data['sortorder'] : null,
-            color: $data['color'] ?? null,
-            yaxisside: isset($data['yaxisside']) ? (int) $data['yaxisside'] : null,
-            calc_fnc: isset($data['calc_fnc']) ? (int) $data['calc_fnc'] : null,
-            type: isset($data['type']) ? (int) $data['type'] : null,
+            drawtype: $drawtype,
+            sortorder: $sortorder,
+            color: isset($data['color']) && is_string($data['color']) ? $data['color'] : null,
+            yaxisside: $yaxisside,
+            calc_fnc: $calcFnc,
+            type: $type,
         );
     }
 
