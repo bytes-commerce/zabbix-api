@@ -72,6 +72,7 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'trends' => '365d',
                 'units' => 'ms',
             ],
             'tx.http_status' => [
@@ -79,12 +80,14 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'tx.error_rate' => [
                 'name' => 'HTTP Error Rate',
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'trends' => '365d',
                 'units' => '%',
             ],
             'auth.login.success' => [
@@ -92,12 +95,14 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'auth.login.failure' => [
                 'name' => 'Login Failure Count',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'auth.login.success_event' => [
                 'name' => 'Login Success Event',
@@ -116,18 +121,21 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'entity.update.success' => [
                 'name' => 'Entity Update Count',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'entity.remove.success' => [
                 'name' => 'Entity Remove Count',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'error.exception' => [
                 'name' => 'Exception Event',
@@ -140,18 +148,21 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'messenger.failed.count' => [
                 'name' => 'Failed Messages Count',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'messenger.processing_ms' => [
                 'name' => 'Message Processing Time',
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'trends' => '365d',
                 'units' => 'ms',
             ],
             'messenger.received' => [
@@ -159,18 +170,21 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'messenger.handled' => [
                 'name' => 'Messages Handled',
                 'type' => 2,
                 'value_type' => 3,
                 'history' => '7d',
+                'trends' => '365d',
             ],
             'cache.hit_rate' => [
                 'name' => 'Cache Hit Rate',
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'trends' => '365d',
                 'units' => '%',
             ],
             'db.query_time_ms' => [
@@ -178,6 +192,7 @@ final readonly class ZabbixItemRegistry implements ItemDefinitionProviderInterfa
                 'type' => 2,
                 'value_type' => 0,
                 'history' => '7d',
+                'trends' => '365d',
                 'units' => 'ms',
             ],
         ];

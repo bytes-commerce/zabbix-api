@@ -178,6 +178,10 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
                     'history' => $definition['history'],
                 ];
 
+                if (isset($definition['trends'])) {
+                    $itemData['trends'] = $definition['trends'];
+                }
+
                 if (isset($definition['units'])) {
                     $itemData['units'] = $definition['units'];
                 }

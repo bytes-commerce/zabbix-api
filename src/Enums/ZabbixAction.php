@@ -47,6 +47,7 @@ enum ZabbixAction: string
     case ITEM_DELETE = 'item.delete';
     case ITEM_GET = 'item.get';
     case ITEM_UPDATE = 'item.update';
+    case TREND_GET = 'trend.get';
     case TRIGGER_CREATE = 'trigger.create';
     case TRIGGER_DELETE = 'trigger.delete';
     case TRIGGER_GET = 'trigger.get';
