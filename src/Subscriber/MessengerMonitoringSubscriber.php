@@ -4,6 +4,7 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Subscriber;
 
+use BytesCommerce\ZabbixApi\Contract\MonitoringMessageInterface;
 use BytesCommerce\ZabbixApi\Contract\ZabbixNamingProviderInterface;
 use BytesCommerce\ZabbixApi\Message\PushMetricMessage;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
@@ -34,6 +35,10 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
 
     public function onMessageReceived(WorkerMessageReceivedEvent $event): void
     {
+        if ($this->isMonitoringMessage($event)) {
+            return;
+        }
+
         $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
 
         $this->bus->dispatch(new PushMetricMessage(
@@ -49,6 +54,10 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
 
     public function onMessageHandled(WorkerMessageHandledEvent $event): void
     {
+        if ($this->isMonitoringMessage($event)) {
+            return;
+        }
+
         $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
 
         $this->bus->dispatch(new PushMetricMessage(
@@ -63,6 +72,10 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
 
     public function onMessageFailed(WorkerMessageFailedEvent $event): void
     {
+        if ($this->isMonitoringMessage($event)) {
+            return;
+        }
+
         $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
         $errorClass = $this->getShortClassName($event->getThrowable()::class);
 
@@ -75,6 +88,11 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
                 'error_class' => $errorClass,
             ],
         ));
+    }
+
+    private function isMonitoringMessage(WorkerMessageReceivedEvent|WorkerMessageHandledEvent|WorkerMessageFailedEvent $event): bool
+    {
+        return $event->getEnvelope()->getMessage() instanceof MonitoringMessageInterface;
     }
 
     private function getShortClassName(string $fqcn): string

@@ -4,10 +4,11 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Message;
 
+use BytesCommerce\ZabbixApi\Contract\MonitoringMessageInterface;
 use Symfony\Component\Messenger\Attribute\AsMessage;
 
 #[AsMessage('async')]
-final readonly class PushMetricMessage
+final readonly class PushMetricMessage implements MonitoringMessageInterface
 {
     public function __construct(
         public string $key,
