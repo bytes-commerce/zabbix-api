@@ -9,6 +9,7 @@ use BytesCommerce\ZabbixApi\Contract\ZabbixNamingProviderInterface;
 use BytesCommerce\ZabbixApi\Message\PushMetricMessage;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
+use Symfony\Component\Messenger\Envelope;
 use Symfony\Component\Messenger\Event\WorkerMessageFailedEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageHandledEvent;
 use Symfony\Component\Messenger\Event\WorkerMessageReceivedEvent;
@@ -16,6 +17,8 @@ use Symfony\Component\Messenger\MessageBusInterface;
 
 final readonly class MessengerMonitoringSubscriber implements EventSubscriberInterface
 {
+    private const string ZABBIX_MESSAGE_NAMESPACE = 'BytesCommerce\\ZabbixApi\\Message\\';
+
     public function __construct(
         private MessageBusInterface $bus,
         private ZabbixNamingProviderInterface $naming,
@@ -39,7 +42,12 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
             return;
         }
 
-        $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
+        $message = $event->getEnvelope()->getMessage();
+        while ($message instanceof Envelope) {
+            $message = $message->getMessage();
+        }
+
+        $messageClass = $this->getShortClassName($message::class);
 
         $this->bus->dispatch(new PushMetricMessage(
             key: $this->naming->getItemKey('messenger.received'),
@@ -58,7 +66,12 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
             return;
         }
 
-        $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
+        $message = $event->getEnvelope()->getMessage();
+        while ($message instanceof Envelope) {
+            $message = $message->getMessage();
+        }
+
+        $messageClass = $this->getShortClassName($message::class);
 
         $this->bus->dispatch(new PushMetricMessage(
             key: $this->naming->getItemKey('messenger.handled'),
@@ -76,7 +89,12 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
             return;
         }
 
-        $messageClass = $this->getShortClassName($event->getEnvelope()->getMessage()::class);
+        $message = $event->getEnvelope()->getMessage();
+        while ($message instanceof Envelope) {
+            $message = $message->getMessage();
+        }
+
+        $messageClass = $this->getShortClassName($message::class);
         $errorClass = $this->getShortClassName($event->getThrowable()::class);
 
         $this->bus->dispatch(new PushMetricMessage(
@@ -92,7 +110,17 @@ final readonly class MessengerMonitoringSubscriber implements EventSubscriberInt
 
     private function isMonitoringMessage(WorkerMessageReceivedEvent|WorkerMessageHandledEvent|WorkerMessageFailedEvent $event): bool
     {
-        return $event->getEnvelope()->getMessage() instanceof MonitoringMessageInterface;
+        $message = $event->getEnvelope()->getMessage();
+
+        while ($message instanceof Envelope) {
+            $message = $message->getMessage();
+        }
+
+        if ($message instanceof MonitoringMessageInterface) {
+            return true;
+        }
+
+        return str_starts_with($message::class, self::ZABBIX_MESSAGE_NAMESPACE);
     }
 
     private function getShortClassName(string $fqcn): string

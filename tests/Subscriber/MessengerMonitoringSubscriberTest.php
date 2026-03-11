@@ -6,6 +6,7 @@ namespace BytesCommerce\ZabbixApi\Tests\Subscriber;
 
 use BytesCommerce\ZabbixApi\Contract\MonitoringMessageInterface;
 use BytesCommerce\ZabbixApi\Contract\ZabbixNamingProviderInterface;
+use BytesCommerce\ZabbixApi\Message\EnsureZabbixSetupMessage;
 use BytesCommerce\ZabbixApi\Message\PushEventMessage;
 use BytesCommerce\ZabbixApi\Message\PushMetricMessage;
 use BytesCommerce\ZabbixApi\Subscriber\MessengerMonitoringSubscriber;
@@ -133,6 +134,30 @@ final class MessengerMonitoringSubscriberTest extends TestCase
     {
         $monitoringMessage = new PushEventMessage('test.event', ['data' => 'value']);
         $envelope = new Envelope($monitoringMessage);
+
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $this->subscriber->onMessageReceived(new WorkerMessageReceivedEvent($envelope, 'async'));
+        $this->subscriber->onMessageHandled(new WorkerMessageHandledEvent($envelope, 'async'));
+        $this->subscriber->onMessageFailed(new WorkerMessageFailedEvent($envelope, 'async', new \RuntimeException()));
+    }
+
+    public function testNoRecursiveMessageLoopOccursForEnsureZabbixSetupMessage(): void
+    {
+        $monitoringMessage = new EnsureZabbixSetupMessage();
+        $envelope = new Envelope($monitoringMessage);
+
+        $this->bus->expects($this->never())->method('dispatch');
+
+        $this->subscriber->onMessageReceived(new WorkerMessageReceivedEvent($envelope, 'async'));
+        $this->subscriber->onMessageHandled(new WorkerMessageHandledEvent($envelope, 'async'));
+        $this->subscriber->onMessageFailed(new WorkerMessageFailedEvent($envelope, 'async', new \RuntimeException()));
+    }
+
+    public function testNoRecursiveMessageLoopOccursForNestedEnvelope(): void
+    {
+        $monitoringMessage = new PushMetricMessage('test.metric', 100);
+        $envelope = new Envelope(new Envelope($monitoringMessage));
 
         $this->bus->expects($this->never())->method('dispatch');
 
