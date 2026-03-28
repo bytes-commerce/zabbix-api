@@ -51,7 +51,10 @@ final class Configuration implements ConfigurationInterface
                 ->booleanNode('setup_enabled')
                     ->defaultFalse()
                     ->info('Enable Zabbix setup commands')
-                    ->info('Authentication token cache TTL in seconds (minimum 60)')
+                ->end()
+                ->scalarNode('messenger_transport')
+                    ->defaultValue('async')
+                    ->info('Messenger transport to use for Zabbix messages (e.g. async, sync, or false to use default routing)')
                 ->end()
             ->end();
 
