@@ -12,6 +12,7 @@ use PHPUnit\Framework\TestCase;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Definition;
+use Symfony\Component\DependencyInjection\Extension\PrependExtensionInterface;
 use Symfony\Component\DependencyInjection\ParameterBag\ParameterBag;
 use Symfony\Contracts\Cache\CacheInterface;
 use Symfony\Contracts\HttpClient\HttpClientInterface;
@@ -23,8 +24,9 @@ final class ZabbixApiBundleTest extends TestCase
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.project_dir' => '/tmp',
+            'kernel.project_dir' => __DIR__ . '/../..',
             'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
         ]));
 
         $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
@@ -63,8 +65,9 @@ final class ZabbixApiBundleTest extends TestCase
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.project_dir' => '/tmp',
+            'kernel.project_dir' => __DIR__ . '/../..',
             'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
         ]));
 
         $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
@@ -100,8 +103,9 @@ final class ZabbixApiBundleTest extends TestCase
         $container = new ContainerBuilder(new ParameterBag([
             'kernel.debug' => false,
             'kernel.environment' => 'test',
-            'kernel.project_dir' => '/tmp',
+            'kernel.project_dir' => __DIR__ . '/../..',
             'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
         ]));
 
         $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
@@ -126,5 +130,57 @@ final class ZabbixApiBundleTest extends TestCase
         self::assertNull($container->getParameter('zabbix_api.password'));
         self::assertNull($container->getParameter('zabbix_api.api_token'));
         self::assertSame(3600, $container->getParameter('zabbix_api.auth_ttl'));
+        self::assertSame('async', $container->getParameter('zabbix_api.messenger_transport'));
+    }
+
+    public function testMessengerRoutingIsPrepended(): void
+    {
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.environment' => 'test',
+            'kernel.project_dir' => __DIR__ . '/../..',
+            'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
+        ]));
+
+        $bundle = new ZabbixApiBundle();
+        $extension = $bundle->getContainerExtension();
+        self::assertInstanceOf(PrependExtensionInterface::class, $extension);
+
+        // Test default transport (async)
+        $container->prependExtensionConfig('zabbix_api', []);
+        $extension->prepend($container);
+
+        $frameworkConfig = $container->getExtensionConfig('framework');
+        self::assertCount(1, $frameworkConfig);
+        self::assertSame('async', $frameworkConfig[0]['messenger']['routing']['BytesCommerce\ZabbixApi\Message\PushEventMessage']);
+
+        // Test custom transport
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.environment' => 'test',
+            'kernel.project_dir' => __DIR__ . '/../..',
+            'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
+        ]));
+        $container->prependExtensionConfig('zabbix_api', ['messenger_transport' => 'sync']);
+        $extension->prepend($container);
+
+        $frameworkConfig = $container->getExtensionConfig('framework');
+        self::assertSame('sync', $frameworkConfig[0]['messenger']['routing']['BytesCommerce\ZabbixApi\Message\PushEventMessage']);
+
+        // Test disabled transport (false)
+        $container = new ContainerBuilder(new ParameterBag([
+            'kernel.debug' => false,
+            'kernel.environment' => 'test',
+            'kernel.project_dir' => __DIR__ . '/../..',
+            'env(ZABBIX_API_URL)' => 'https://zabbix.test/api_jsonrpc.php',
+            'env(APP_NAME)' => 'TestApp',
+        ]));
+        $container->prependExtensionConfig('zabbix_api', ['messenger_transport' => false]);
+        $extension->prepend($container);
+
+        $frameworkConfig = $container->getExtensionConfig('framework');
+        self::assertEmpty($frameworkConfig);
     }
 }

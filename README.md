@@ -1,6 +1,7 @@
 # Zabbix API Symfony Bundle
 
-Modern Symfony bundle for Zabbix API integration with persistent authentication, type-safe actions, and history data retrieval.
+Modern Symfony bundle for Zabbix API integration with persistent authentication, type-safe actions, and history data
+retrieval.
 
 ## Features
 
@@ -11,8 +12,8 @@ Modern Symfony bundle for Zabbix API integration with persistent authentication,
 🎯 **PHP 8.3+ Ready** - Full strict typing, readonly properties, enums
 ⚡ **Zero Configuration** - Works out of the box with environment variables
 📦 **Complete API Coverage** - Host, HostGroup, Item, History, Graph, Trigger, and more
-
-## Installation
+🚀 **Asynchronous Monitoring** - Push metrics and events via Symfony Messenger
+🛠️ **Automatic Setup** - Auto-provisioning of hosts, items, and dashboards
 
 ```bash
 composer require bytes-commerce/zabbix-api
@@ -31,6 +32,7 @@ ZABBIX_API_BASE_URI=https://zabbix.example.com/api_jsonrpc.php
 ZABBIX_USERNAME=monitoring_user
 ZABBIX_PASSWORD=secure_password
 ZABBIX_AUTH_TTL=3600  # Optional: cache TTL in seconds
+APP_NAME=MyApplication # Used for host identification
 ```
 
 ### 2. Use Actions (Recommended)
@@ -89,14 +91,14 @@ class MonitoringController
 
 Each action represents a Zabbix API namespace:
 
-| Action Class | API Prefix | Methods Example |
-|-------------|------------|------------------|
-| `History` | `history` | `get()`, `getLast24Hours()`, `getLatest()` |
-| `Host` | `host` | `get()`, `create()`, `update()`, `delete()` |
-| `HostGroup` | `hostgroup` | `get()`, `create()`, `update()`, `delete()`, `exists()`, `getObjects()`, `isReadable()`, `isWritable()`, `massAdd()`, `massRemove()`, `massUpdate()` |
-| `Dashboard` | `dashboard` | `get()`, `create()`, `update()`, `delete()` |
-| `Item` | `item` | `get()`, `create()`, `update()`, `delete()` |
-| `User` | `user` | `login()` |
+| Action Class | API Prefix  | Methods Example                                                                                                                                      |
+|--------------|-------------|------------------------------------------------------------------------------------------------------------------------------------------------------|
+| `History`    | `history`   | `get()`, `getLast24Hours()`, `getLatest()`                                                                                                           |
+| `Host`       | `host`      | `get()`, `create()`, `update()`, `delete()`                                                                                                          |
+| `HostGroup`  | `hostgroup` | `get()`, `create()`, `update()`, `delete()`, `exists()`, `getObjects()`, `isReadable()`, `isWritable()`, `massAdd()`, `massRemove()`, `massUpdate()` |
+| `Dashboard`  | `dashboard` | `get()`, `create()`, `update()`, `delete()`                                                                                                          |
+| `Item`       | `item`      | `get()`, `create()`, `update()`, `delete()`                                                                                                          |
+| `User`       | `user`      | `login()`                                                                                                                                            |
 
 ### Factory Pattern
 
@@ -159,14 +161,14 @@ $recent = $history->getLast24Hours(
 
 ### History Data Types
 
-| Enum | Value | Use Case |
-|------|-------|----------|
-| `NUMERIC_FLOAT` | 0 | CPU load, temperature, percentages |
-| `CHARACTER` | 1 | Short strings |
-| `LOG` | 2 | Log file entries |
-| `NUMERIC_UNSIGNED` | 3 | Disk space, counts (default) |
-| `TEXT` | 4 | Long text values |
-| `BINARY` | 5 | Base64-encoded binary (Zabbix 6.0+) |
+| Enum               | Value | Use Case                            |
+|--------------------|-------|-------------------------------------|
+| `NUMERIC_FLOAT`    | 0     | CPU load, temperature, percentages  |
+| `CHARACTER`        | 1     | Short strings                       |
+| `LOG`              | 2     | Log file entries                    |
+| `NUMERIC_UNSIGNED` | 3     | Disk space, counts (default)        |
+| `TEXT`             | 4     | Long text values                    |
+| `BINARY`           | 5     | Base64-encoded binary (Zabbix 6.0+) |
 
 ### Host Management
 
@@ -401,6 +403,76 @@ $token = $user->login('username', 'password');
 // Token is now cached automatically
 ```
 
+## Asynchronous Operations (Messenger)
+
+The bundle integrates with Symfony Messenger to push metrics and events without blocking the main request.
+
+### 1. Push Metrics
+
+Send numeric values to Zabbix items:
+
+```php
+use BytesCommerce\ZabbixApi\Message\PushMetricMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+public function trackLogin(MessageBusInterface $bus): void
+{
+    $bus->dispatch(new PushMetricMessage(
+        key: 'app.user.login',
+        value: 1,
+        tags: ['env' => 'prod']
+    ));
+}
+```
+
+### 2. Push Events
+
+Send complex event data:
+
+```php
+use BytesCommerce\ZabbixApi\Message\PushEventMessage;
+use Symfony\Component\Messenger\MessageBusInterface;
+
+public function trackError(MessageBusInterface $bus, \Exception $e): void
+{
+    $bus->dispatch(new PushEventMessage(
+        key: 'app.error',
+        payload: [
+            'message' => $e->getMessage(),
+            'file' => $e->getFile(),
+            'line' => $e->getLine()
+        ]
+    ));
+}
+```
+
+### 3. Transport Configuration
+
+By default, messages are routed to the `async` transport. You can change this in your configuration:
+
+```yaml
+zabbix_api:
+  messenger_transport: async # Use 'sync' for immediate execution or 'false' to disable auto-routing
+```
+
+## Automatic Setup
+
+The bundle can automatically ensure that the necessary Zabbix infrastructure (Hosts, Items, Dashboards) exists.
+
+### Configuration
+
+```yaml
+zabbix_api:
+  setup_enabled: true
+  app_name: 'My Application'
+  host_group: 'Application Servers'
+  dashboard_config_path: '%kernel.project_dir%/config/zabbix/dashboards'
+```
+
+### Usage
+
+When `setup_enabled` is true, the bundle will automatically dispatch an `EnsureZabbixSetupMessage` to verify and create the required resources in Zabbix.
+
 ## Advanced Usage
 
 ### ActionService (Backward Compatible)
@@ -485,22 +557,38 @@ Authentication errors (-32602, "Session terminated") trigger automatic recovery:
 
 ```yaml
 zabbix_api:
-    base_uri: '%env(ZABBIX_API_BASE_URI)%'
-    username: '%env(ZABBIX_USERNAME)%'
-    password: '%env(ZABBIX_PASSWORD)%'
-    auth_ttl: 3600  # seconds, default: 3600
+  # API Connection
+  base_uri: '%env(ZABBIX_API_BASE_URI)%'
+  api_token: '%env(ZABBIX_API_TOKEN)%' # Alternative to username/password
+  username: '%env(ZABBIX_USERNAME)%'
+  password: '%env(ZABBIX_PASSWORD)%'
+  auth_ttl: 3600  # seconds, default: 3600
+
+  # Monitoring Configuration
+  app_name: '%env(APP_NAME)%' # Application name for monitoring
+  host_group: 'Application Servers' # Default Zabbix host group
+
+  # Messenger Integration
+  messenger_transport: async  # Messenger transport for Zabbix messages (e.g. async, sync, or false to disable auto-routing)
+
+  # Automatic Setup
+  setup_enabled: false # Enable Zabbix setup commands
+  dashboard_config_path: '%kernel.project_dir%/config/zabbix/dashboards' # Path to dashboard configuration files
 ```
 
 ### Environment Variables
 
 ```bash
-# Required
+# Required (either API Token or Username/Password)
 ZABBIX_API_BASE_URI=https://zabbix.example.com/api_jsonrpc.php
+ZABBIX_API_TOKEN=your_api_token
+# OR
 ZABBIX_USERNAME=monitoring_user
 ZABBIX_PASSWORD=secure_password
 
 # Optional
 ZABBIX_AUTH_TTL=3600  # Token cache TTL in seconds
+APP_NAME=MyApplication # Used for host identification
 ```
 
 ## Creating Custom Actions
