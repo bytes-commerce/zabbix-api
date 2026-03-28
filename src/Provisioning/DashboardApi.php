@@ -123,7 +123,10 @@ final readonly class DashboardApi implements DashboardApiInterface
         Assert::isArray($result);
         Assert::count($result, 1);
 
-        return $this->parseDashboard($result[0]);
+        $dashboardData = $result[0];
+        Assert::isArray($dashboardData);
+
+        return $this->parseDashboard($dashboardData);
     }
 
     public function findHostById(string $hostId): ?HostInfo
@@ -139,7 +142,12 @@ final readonly class DashboardApi implements DashboardApiInterface
             return null;
         }
 
-        return HostInfo::fromArray($result[0]);
+        $hostData = $result[0];
+        if (!\is_array($hostData)) {
+            return null;
+        }
+
+        return HostInfo::fromArray($hostData);
     }
 
     public function findHostByName(string $hostName): ?HostInfo
@@ -155,7 +163,12 @@ final readonly class DashboardApi implements DashboardApiInterface
             return null;
         }
 
-        return HostInfo::fromArray($result[0]);
+        $hostData = $result[0];
+        if (!\is_array($hostData)) {
+            return null;
+        }
+
+        return HostInfo::fromArray($hostData);
     }
 
     private function parseDashboard(array $data): ZabbixDashboard
@@ -164,9 +177,15 @@ final readonly class DashboardApi implements DashboardApiInterface
         $managedKey = $this->extractManagedKey($widgets);
         $hash = $this->extractHash($widgets);
 
+        $dashboardId = $data['dashboardid'] ?? null;
+        $name = $data['name'] ?? null;
+
+        Assert::string($dashboardId);
+        Assert::string($name);
+
         return new ZabbixDashboard(
-            dashboardId: DashboardId::fromString($data['dashboardid']),
-            name: $data['name'],
+            dashboardId: DashboardId::fromString($dashboardId),
+            name: $name,
             managedKey: $managedKey,
             hash: $hash,
             widgets: $widgets,
@@ -177,12 +196,22 @@ final readonly class DashboardApi implements DashboardApiInterface
     {
         $widgets = [];
 
-        foreach ($dashboardData['pages'] ?? [] as $page) {
+        $pages = $dashboardData['pages'] ?? [];
+        if (!\is_array($pages)) {
+            return $widgets;
+        }
+
+        foreach ($pages as $page) {
             if (!\is_array($page)) {
                 continue;
             }
 
-            foreach ($page['widgets'] ?? [] as $widget) {
+            $pageWidgets = $page['widgets'] ?? [];
+            if (!\is_array($pageWidgets)) {
+                continue;
+            }
+
+            foreach ($pageWidgets as $widget) {
                 if (\is_array($widget)) {
                     $widgets[] = $widget;
                 }
@@ -199,15 +228,26 @@ final readonly class DashboardApi implements DashboardApiInterface
                 continue;
             }
 
-            if (($widget['type'] ?? '') === 'text' && str_contains((string) ($widget['name'] ?? ''), 'Managed')) {
-                foreach ($widget['fields'] ?? [] as $field) {
+            $type = $widget['type'] ?? '';
+            $name = $widget['name'] ?? '';
+
+            if ($type === 'text' && is_string($name) && str_contains($name, 'Managed')) {
+                $fields = $widget['fields'] ?? [];
+                if (!\is_array($fields)) {
+                    continue;
+                }
+
+                foreach ($fields as $field) {
                     if (!\is_array($field)) {
                         continue;
                     }
 
-                    if (($field['type'] ?? '0') === '1' && str_contains((string) ($field['value'] ?? ''), 'Key:')) {
-                        preg_match('/Key:\s*(\S+)/', (string) $field['value'], $matches);
-                        if (isset($matches[1])) {
+                    $fieldType = $field['type'] ?? '0';
+                    $fieldValue = $field['value'] ?? '';
+
+                    if ($fieldType === '1' && is_string($fieldValue) && str_contains($fieldValue, 'Key:')) {
+                        preg_match('/Key:\s*(\S+)/', $fieldValue, $matches);
+                        if (isset($matches[1]) && is_string($matches[1])) {
                             return ManagedKey::fromString($matches[1]);
                         }
                     }
@@ -225,15 +265,26 @@ final readonly class DashboardApi implements DashboardApiInterface
                 continue;
             }
 
-            if (($widget['type'] ?? '') === 'text' && str_contains((string) ($widget['name'] ?? ''), 'Managed')) {
-                foreach ($widget['fields'] ?? [] as $field) {
+            $type = $widget['type'] ?? '';
+            $name = $widget['name'] ?? '';
+
+            if ($type === 'text' && is_string($name) && str_contains($name, 'Managed')) {
+                $fields = $widget['fields'] ?? [];
+                if (!\is_array($fields)) {
+                    continue;
+                }
+
+                foreach ($fields as $field) {
                     if (!\is_array($field)) {
                         continue;
                     }
 
-                    if (($field['type'] ?? '1') === '1' && str_contains((string) ($field['value'] ?? ''), 'Hash:')) {
-                        preg_match('/Hash:\s*(\S+)/', (string) $field['value'], $matches);
-                        if (isset($matches[1])) {
+                    $fieldType = $field['type'] ?? '1';
+                    $fieldValue = $field['value'] ?? '';
+
+                    if ($fieldType === '1' && is_string($fieldValue) && str_contains($fieldValue, 'Hash:')) {
+                        preg_match('/Hash:\s*(\S+)/', $fieldValue, $matches);
+                        if (isset($matches[1]) && is_string($matches[1])) {
                             return DefinitionHash::fromString($matches[1]);
                         }
                     }

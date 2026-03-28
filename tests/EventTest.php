@@ -27,7 +27,16 @@ final class EventTest extends TestCase
     {
         $params = ['source' => Event::SOURCE_TRIGGER, 'value' => 1];
         $expectedParams = ['source' => Event::SOURCE_TRIGGER, 'value' => 1, 'output' => 'extend'];
-        $expectedResult = [['eventid' => '1', 'clock' => '1672531200']];
+        $expectedResult = [[
+            'eventid' => '1',
+            'source' => 0,
+            'object' => 0,
+            'objectid' => 100,
+            'clock' => 1672531200,
+            'value' => 1,
+            'acknowledged' => 0,
+            'ns' => 0,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -46,7 +55,16 @@ final class EventTest extends TestCase
             'selectHosts' => ['hostid', 'name'],
             'source' => Event::SOURCE_TRIGGER,
         ];
-        $expectedResult = [['eventid' => '1', 'clock' => '1672531200', 'value' => 1]];
+        $expectedResult = [[
+            'eventid' => '1',
+            'source' => 0,
+            'object' => 0,
+            'objectid' => 100,
+            'clock' => 1672531200,
+            'value' => 1,
+            'acknowledged' => 0,
+            'ns' => 0,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -132,20 +150,17 @@ final class EventTest extends TestCase
 
     public function testConstants(): void
     {
-        // Test source constants
         self::assertSame(0, Event::SOURCE_TRIGGER);
         self::assertSame(1, Event::SOURCE_DISCOVERY);
         self::assertSame(2, Event::SOURCE_AUTOREGISTRATION);
         self::assertSame(3, Event::SOURCE_INTERNAL);
         self::assertSame(4, Event::SOURCE_SERVICE);
 
-        // Test action constants
         self::assertSame(1, Event::ACTION_CLOSE);
         self::assertSame(2, Event::ACTION_ACKNOWLEDGE);
         self::assertSame(4, Event::ACTION_MESSAGE);
         self::assertSame(8, Event::ACTION_SEVERITY);
 
-        // Test bitmask combinations
         $acknowledgeAndMessage = Event::ACTION_ACKNOWLEDGE | Event::ACTION_MESSAGE;
         self::assertSame(6, $acknowledgeAndMessage);
 

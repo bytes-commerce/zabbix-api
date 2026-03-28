@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetItemResponseDto
 {
     /**
-     * @param ItemDto[] $items
+     * @param list<ItemDto> $items
      */
     public function __construct(
         public array $items,
@@ -16,8 +16,13 @@ final readonly class GetItemResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            items: array_map(ItemDto::fromArray(...), $data),
-        );
+        $items = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $items[] = ItemDto::fromArray($item);
+            }
+        }
+
+        return new self(items: $items);
     }
 }

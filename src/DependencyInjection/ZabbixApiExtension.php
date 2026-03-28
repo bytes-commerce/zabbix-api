@@ -38,18 +38,27 @@ final class ZabbixApiExtension extends Extension implements PrependExtensionInte
         $configuration = new Configuration();
         $config = $this->processConfiguration($configuration, $configs);
 
-        $container->setParameter('zabbix_api.base_uri', $config['base_uri']);
-        $container->setParameter('zabbix_api.api_token', $config['api_token']);
-        $container->setParameter('zabbix_api.username', $config['username']);
-        $container->setParameter('zabbix_api.password', $config['password']);
-        $container->setParameter('zabbix_api.auth_ttl', $config['auth_ttl']);
-        $container->setParameter('zabbix_api.app_name', $config['app_name']);
-        $container->setParameter('zabbix_api.host_group', $config['host_group']);
-        $container->setParameter('zabbix_api.dashboard_config_path', $config['dashboard_config_path']);
-        $container->setParameter('zabbix_api.setup_enabled', $config['setup_enabled']);
+        $container->setParameter('zabbix_api.base_uri', $this->getConfigValue($config, 'base_uri'));
+        $container->setParameter('zabbix_api.api_token', $this->getConfigValue($config, 'api_token'));
+        $container->setParameter('zabbix_api.username', $this->getConfigValue($config, 'username'));
+        $container->setParameter('zabbix_api.password', $this->getConfigValue($config, 'password'));
+        $container->setParameter('zabbix_api.auth_ttl', $this->getConfigValue($config, 'auth_ttl'));
+        $container->setParameter('zabbix_api.app_name', $this->getConfigValue($config, 'app_name'));
+        $container->setParameter('zabbix_api.host_group', $this->getConfigValue($config, 'host_group'));
+        $container->setParameter('zabbix_api.dashboard_config_path', $this->getConfigValue($config, 'dashboard_config_path'));
+        $container->setParameter('zabbix_api.setup_enabled', $this->getConfigValue($config, 'setup_enabled'));
         $container->setParameter('zabbix_api.messenger_transport', $config['messenger_transport']);
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
+    }
+
+    private function getConfigValue(array $config, string $key): array|bool|float|int|string|null
+    {
+        $value = $config[$key] ?? null;
+        if ($value === null || is_array($value) || is_bool($value) || is_float($value) || is_int($value) || is_string($value)) {
+            return $value;
+        }
+        return null;
     }
 }

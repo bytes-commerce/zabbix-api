@@ -266,12 +266,12 @@ final class History extends AbstractAction
             return new PushHistoryResponseDto([], '');
         }
 
-        $params = array_map(
+        $items = array_map(
             static fn (PushHistoryDto $dto) => $dto->toArray(),
             $historyData,
         );
 
-        $result = $this->client->call(ZabbixAction::HISTORY_PUSH, $params);
+        $result = $this->client->call(ZabbixAction::HISTORY_PUSH, $items);
 
         return PushHistoryResponseDto::fromArray(is_array($result) ? $result : []);
     }

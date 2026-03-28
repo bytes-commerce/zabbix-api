@@ -4,7 +4,7 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
-use BytesCommerce\ZabbixApi\Enums\HistoryTypeEnum;
+use Webmozart\Assert\Assert;
 
 final readonly class HistoryDto
 {
@@ -23,16 +23,44 @@ final readonly class HistoryDto
 
     public static function fromArray(array $data): self
     {
+        Assert::string($data['itemid'] ?? null);
+        Assert::integerish($data['clock'] ?? null);
+        Assert::string($data['value'] ?? null);
+
+        $ns = null;
+        if (isset($data['ns'])) {
+            Assert::integerish($data['ns']);
+            $ns = (int) $data['ns'];
+        }
+
+        $timestamp = null;
+        if (isset($data['timestamp'])) {
+            Assert::integerish($data['timestamp']);
+            $timestamp = (int) $data['timestamp'];
+        }
+
+        $logeventid = null;
+        if (isset($data['logeventid'])) {
+            Assert::integerish($data['logeventid']);
+            $logeventid = (int) $data['logeventid'];
+        }
+
+        $severity = null;
+        if (isset($data['severity'])) {
+            Assert::integerish($data['severity']);
+            $severity = (int) $data['severity'];
+        }
+
         return new self(
             itemid: $data['itemid'],
             clock: (int) $data['clock'],
             value: $data['value'],
-            ns: isset($data['ns']) ? (int) $data['ns'] : null,
-            timestamp: isset($data['timestamp']) ? (int) $data['timestamp'] : null,
-            logeventid: isset($data['logeventid']) ? (int) $data['logeventid'] : null,
-            severity: isset($data['severity']) ? (int) $data['severity'] : null,
-            source: $data['source'] ?? null,
-            eventid: $data['eventid'] ?? null,
+            ns: $ns,
+            timestamp: $timestamp,
+            logeventid: $logeventid,
+            severity: $severity,
+            source: isset($data['source']) && is_string($data['source']) ? $data['source'] : null,
+            eventid: isset($data['eventid']) && is_string($data['eventid']) ? $data['eventid'] : null,
         );
     }
 

@@ -29,12 +29,9 @@ final class ZabbixApiBundleTest extends TestCase
             'env(APP_NAME)' => 'TestApp',
         ]));
 
-        // Register required framework services as synthetic
         $container->setDefinition('http_client', (new Definition(HttpClientInterface::class))->setSynthetic(true));
         $container->setDefinition(LoggerInterface::class, (new Definition(LoggerInterface::class))->setSynthetic(true));
         $container->setDefinition('cache.app', (new Definition(CacheInterface::class))->setSynthetic(true));
-
-        // Set autowiring aliases so the container can resolve typed parameters
         $container->setAlias(HttpClientInterface::class, 'http_client')->setPublic(false);
         $container->setAlias(CacheInterface::class, 'cache.app')->setPublic(false);
 
@@ -52,7 +49,6 @@ final class ZabbixApiBundleTest extends TestCase
             ],
         ], $container);
 
-        // Make services public so we can verify they exist after compilation
         $container->getDefinition(ZabbixClientInterface::class)->setPublic(true);
         $container->getDefinition(ZabbixServiceInterface::class)->setPublic(true);
         $container->getDefinition(ActionServiceInterface::class)->setPublic(true);
@@ -125,7 +121,9 @@ final class ZabbixApiBundleTest extends TestCase
         self::assertNotNull($extension);
 
         $extension->load([
-            ['base_uri' => 'https://zabbix.test/api_jsonrpc.php'],
+            [
+                'base_uri' => 'https://zabbix.test/api_jsonrpc.php',
+            ],
         ], $container);
 
         self::assertNull($container->getParameter('zabbix_api.username'));

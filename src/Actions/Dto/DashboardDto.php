@@ -4,6 +4,8 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Actions\Dto;
 
+use Webmozart\Assert\Assert;
+
 final readonly class DashboardDto
 {
     /**
@@ -22,17 +24,43 @@ final readonly class DashboardDto
 
     public static function fromArray(array $data): self
     {
-        $pages = isset($data['pages']) && is_array($data['pages'])
-            ? array_map(DashboardPageDto::fromArray(...), $data['pages'])
-            : [];
+        Assert::string($data['dashboardid'] ?? null);
+        Assert::string($data['name'] ?? null);
+
+        $pages = [];
+        if (isset($data['pages']) && is_array($data['pages'])) {
+            foreach ($data['pages'] as $pageData) {
+                if (is_array($pageData)) {
+                    $pages[] = DashboardPageDto::fromArray($pageData);
+                }
+            }
+        }
+
+        $private = null;
+        if (isset($data['private'])) {
+            Assert::integerish($data['private']);
+            $private = (int) $data['private'];
+        }
+
+        $displayPeriod = null;
+        if (isset($data['display_period'])) {
+            Assert::integerish($data['display_period']);
+            $displayPeriod = (int) $data['display_period'];
+        }
+
+        $autoStart = null;
+        if (isset($data['auto_start'])) {
+            Assert::integerish($data['auto_start']);
+            $autoStart = (int) $data['auto_start'];
+        }
 
         return new self(
             dashboardid: $data['dashboardid'],
             name: $data['name'],
-            private: isset($data['private']) ? (int) $data['private'] : null,
-            userid: $data['userid'] ?? null,
-            display_period: isset($data['display_period']) ? (int) $data['display_period'] : null,
-            auto_start: isset($data['auto_start']) ? (int) $data['auto_start'] : null,
+            private: $private,
+            userid: isset($data['userid']) && is_string($data['userid']) ? $data['userid'] : null,
+            display_period: $displayPeriod,
+            auto_start: $autoStart,
             pages: $pages,
         );
     }

@@ -30,7 +30,7 @@ final class Item extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::ITEM_GET, $params);
 
-        return GetItemResponseDto::fromArray($result);
+        return GetItemResponseDto::fromArray(is_array($result) ? $result : []);
     }
 
     public function create(CreateItemDto $dto): mixed

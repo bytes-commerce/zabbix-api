@@ -34,6 +34,9 @@ final class Event extends AbstractAction
 
     public const int ACTION_SEVERITY = 8;
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function get(array $params): GetEventResponseDto
     {
         if (!isset($params['output'])) {
@@ -42,9 +45,12 @@ final class Event extends AbstractAction
 
         $result = $this->client->call(ZabbixAction::EVENT_GET, $params);
 
-        return GetEventResponseDto::fromArray($result);
+        return GetEventResponseDto::fromArray(is_array($result) ? $result : []);
     }
 
+    /**
+     * @param array<string, mixed> $params
+     */
     public function acknowledge(array $params): mixed
     {
         if (!isset($params['eventids']) || !is_array($params['eventids'])) {

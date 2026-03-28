@@ -37,7 +37,7 @@ final class Configuration implements ConfigurationInterface
                     ->info('Authentication TTL in seconds')
                 ->end()
                 ->scalarNode('app_name')
-                    ->defaultValue('%env(APP_NAME)%')
+                    ->defaultNull()
                     ->info('Application name for monitoring')
                 ->end()
                 ->scalarNode('host_group')

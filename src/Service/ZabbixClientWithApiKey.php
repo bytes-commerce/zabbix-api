@@ -164,7 +164,14 @@ final class ZabbixClientWithApiKey implements ZabbixClientWithApiKeyInterface
             $data = $response->toArray();
 
             if (isset($data['error']) && \is_array($data['error'])) {
-                $error = ResponseValidator::ensureErrorStructure($data['error']);
+                $errorData = $data['error'];
+                $typedError = [];
+                foreach ($errorData as $key => $value) {
+                    if (is_string($key)) {
+                        $typedError[$key] = $value;
+                    }
+                }
+                $error = ResponseValidator::ensureErrorStructure($typedError);
 
                 throw new ZabbixApiException(
                     $error['message'],

@@ -26,7 +26,13 @@ final class ResponseValidator
             );
         }
 
-        return $result;
+        $typed = [];
+        foreach ($result as $key => $value) {
+            Assert::string($key, sprintf('Array key must be string, got %s', get_debug_type($key)));
+            $typed[$key] = $value;
+        }
+
+        return $typed;
     }
 
     /**

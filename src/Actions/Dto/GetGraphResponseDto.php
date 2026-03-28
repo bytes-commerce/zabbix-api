@@ -16,9 +16,14 @@ final readonly class GetGraphResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            graphs: array_map(GraphDto::fromArray(...), $data),
-        );
+        $graphs = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $graphs[] = GraphDto::fromArray($item);
+            }
+        }
+
+        return new self(graphs: $graphs);
     }
 
     /**

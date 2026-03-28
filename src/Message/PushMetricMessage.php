@@ -4,7 +4,9 @@ declare(strict_types=1);
 
 namespace BytesCommerce\ZabbixApi\Message;
 
-final readonly class PushMetricMessage
+use BytesCommerce\ZabbixApi\Contract\MonitoringMessageInterface;
+
+final readonly class PushMetricMessage implements MonitoringMessageInterface
 {
     public function __construct(
         public string $key,

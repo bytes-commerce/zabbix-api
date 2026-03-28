@@ -16,6 +16,7 @@ use BytesCommerce\ZabbixApi\Actions\Dto\UpdateSingleActionDto;
 use BytesCommerce\ZabbixApi\Actions\Dto\GetActionDto;
 use BytesCommerce\ZabbixApi\Enums\OutputEnum;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
+use Webmozart\Assert\Assert;
 
 final class Action extends AbstractAction
 {
@@ -32,6 +33,7 @@ final class Action extends AbstractAction
         }
 
         $result = $this->client->call(ZabbixAction::ACTION_GET, $params);
+        Assert::isArray($result);
 
         return GetActionResponseDto::fromArray($result);
     }
@@ -40,7 +42,10 @@ final class Action extends AbstractAction
     {
         $actions = array_map($this->mapCreateAction(...), $dto->actions);
 
-        $result = $this->client->call(ZabbixAction::ACTION_CREATE, $actions);
+        $result = $this->client->call(ZabbixAction::ACTION_CREATE, ['actions' => $actions]);
+        Assert::isArray($result);
+        Assert::keyExists($result, 'actionids');
+        Assert::isArray($result['actionids']);
 
         return new CreateActionResponseDto($result['actionids']);
     }
@@ -49,7 +54,10 @@ final class Action extends AbstractAction
     {
         $actions = array_map($this->mapUpdateAction(...), $dto->actions);
 
-        $result = $this->client->call(ZabbixAction::ACTION_UPDATE, $actions);
+        $result = $this->client->call(ZabbixAction::ACTION_UPDATE, ['actions' => $actions]);
+        Assert::isArray($result);
+        Assert::keyExists($result, 'actionids');
+        Assert::isArray($result['actionids']);
 
         return new UpdateActionResponseDto($result['actionids']);
     }
@@ -61,6 +69,9 @@ final class Action extends AbstractAction
         return new DeleteActionResponseDto();
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function mapCreateAction(CreateSingleActionDto $action): array
     {
         $data = [
@@ -96,6 +107,9 @@ final class Action extends AbstractAction
         return $data;
     }
 
+    /**
+     * @return array<string, mixed>
+     */
     private function mapUpdateAction(UpdateSingleActionDto $action): array
     {
         $data = [

@@ -27,7 +27,11 @@ final class TriggerTest extends TestCase
     {
         $params = ['filter' => ['value' => 1]];
         $expectedParams = ['filter' => ['value' => 1], 'output' => 'extend'];
-        $expectedResult = [['triggerid' => '1', 'description' => 'Test Trigger']];
+        $expectedResult = [[
+            'triggerid' => '1',
+            'description' => 'Test Trigger',
+            'expression' => 'last(/host/system.cpu.load)>5',
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')
@@ -42,7 +46,12 @@ final class TriggerTest extends TestCase
     public function testGetWithCustomOutput(): void
     {
         $params = ['output' => ['triggerid', 'description', 'priority'], 'selectHosts' => ['hostid', 'name']];
-        $expectedResult = [['triggerid' => '1', 'description' => 'Test Trigger', 'priority' => 4]];
+        $expectedResult = [[
+            'triggerid' => '1',
+            'description' => 'Test Trigger',
+            'expression' => 'last(/host/system.cpu.load)>5',
+            'priority' => 4,
+        ]];
 
         $this->zabbixClient->expects(self::once())
             ->method('call')

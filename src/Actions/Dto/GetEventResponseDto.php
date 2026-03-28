@@ -7,7 +7,7 @@ namespace BytesCommerce\ZabbixApi\Actions\Dto;
 final readonly class GetEventResponseDto
 {
     /**
-     * @param EventDto[] $events
+     * @param list<EventDto> $events
      */
     public function __construct(
         public array $events,
@@ -16,8 +16,13 @@ final readonly class GetEventResponseDto
 
     public static function fromArray(array $data): self
     {
-        return new self(
-            events: array_map(EventDto::fromArray(...), $data),
-        );
+        $events = [];
+        foreach ($data as $item) {
+            if (is_array($item)) {
+                $events[] = EventDto::fromArray($item);
+            }
+        }
+
+        return new self(events: $events);
     }
 }

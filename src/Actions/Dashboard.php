@@ -14,6 +14,7 @@ use BytesCommerce\ZabbixApi\Actions\Dto\UpdateDashboardDto;
 use BytesCommerce\ZabbixApi\Actions\Dto\UpdateDashboardResponseDto;
 use BytesCommerce\ZabbixApi\Enums\OutputEnum;
 use BytesCommerce\ZabbixApi\Enums\ZabbixAction;
+use Webmozart\Assert\Assert;
 
 final class Dashboard extends AbstractAction
 {
@@ -36,20 +37,38 @@ final class Dashboard extends AbstractAction
 
     public function create(CreateDashboardDto $dto): CreateDashboardResponseDto
     {
-        $params = array_map($this->mapCreateDashboard(...), $dto->dashboards);
+        $params = [];
+        foreach ($dto->dashboards as $dashboard) {
+            $params[] = $this->mapCreateDashboard($dashboard);
+        }
 
         $result = $this->client->call(ZabbixAction::DASHBOARD_CREATE, $params);
+        Assert::isArray($result);
+        Assert::keyExists($result, 'dashboardids');
+        Assert::isList($result['dashboardids']);
 
-        return new CreateDashboardResponseDto($result['dashboardids']);
+        /** @var list<string> $dashboardids */
+        $dashboardids = $result['dashboardids'];
+
+        return new CreateDashboardResponseDto($dashboardids);
     }
 
     public function update(UpdateDashboardDto $dto): UpdateDashboardResponseDto
     {
-        $params = array_map($this->mapUpdateDashboard(...), $dto->dashboards);
+        $params = [];
+        foreach ($dto->dashboards as $dashboard) {
+            $params[] = $this->mapUpdateDashboard($dashboard);
+        }
 
         $result = $this->client->call(ZabbixAction::DASHBOARD_UPDATE, $params);
+        Assert::isArray($result);
+        Assert::keyExists($result, 'dashboardids');
+        Assert::isList($result['dashboardids']);
 
-        return new UpdateDashboardResponseDto($result['dashboardids']);
+        /** @var list<string> $dashboardids */
+        $dashboardids = $result['dashboardids'];
+
+        return new UpdateDashboardResponseDto($dashboardids);
     }
 
     public function delete(DeleteDashboardDto $dto): DeleteDashboardResponseDto
@@ -59,6 +78,10 @@ final class Dashboard extends AbstractAction
         return new DeleteDashboardResponseDto();
     }
 
+    /**
+     * @param array<string, mixed> $dashboard
+     * @return array<string, mixed>
+     */
     private function mapCreateDashboard(array $dashboard): array
     {
         $data = [
@@ -88,6 +111,10 @@ final class Dashboard extends AbstractAction
         return $data;
     }
 
+    /**
+     * @param array<string, mixed> $dashboard
+     * @return array<string, mixed>
+     */
     private function mapUpdateDashboard(array $dashboard): array
     {
         $data = [
