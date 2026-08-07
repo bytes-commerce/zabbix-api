@@ -80,14 +80,6 @@ final class ZabbixSetup implements ZabbixSetupInterface
         $this->lastFailureAt = null;
     }
 
-        $hostId = $this->registry->getHostId();
-        if ($hostId !== null) {
-            return;
-        }
-
-        $this->ensureAll();
-    }
-
     public function ensureAll(): void
     {
         if (!$this->setupEnabled) {
