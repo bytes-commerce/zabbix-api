@@ -48,6 +48,7 @@ final class ZabbixApiExtension extends Extension implements PrependExtensionInte
         $container->setParameter('zabbix_api.dashboard_config_path', $this->getConfigValue($config, 'dashboard_config_path'));
         $container->setParameter('zabbix_api.setup_enabled', $this->getConfigValue($config, 'setup_enabled'));
         $container->setParameter('zabbix_api.messenger_transport', $this->getConfigValue($config, 'messenger_transport'));
+        $container->setParameter('zabbix_api.setup_failure_cooldown_seconds', (int) $this->getConfigValue($config, 'setup_failure_cooldown_seconds'));
 
         $loader = new YamlFileLoader($container, new FileLocator(__DIR__ . '/../Resources/config'));
         $loader->load('services.yaml');
