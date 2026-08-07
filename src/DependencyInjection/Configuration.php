@@ -56,6 +56,10 @@ final class Configuration implements ConfigurationInterface
                     ->defaultValue('async')
                     ->info('Messenger transport to use for Zabbix messages (e.g. async, sync, or false to use default routing)')
                 ->end()
+                ->integerNode('setup_failure_cooldown_seconds')
+                    ->defaultValue(300)
+                    ->info('Seconds to skip Zabbix auto-setup after a failure. Prevents message queue stall when Zabbix API is unreachable.')
+                ->end()
             ->end();
 
         return $treeBuilder;

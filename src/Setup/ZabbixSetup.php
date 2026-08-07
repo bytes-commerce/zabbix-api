@@ -12,10 +12,13 @@ use BytesCommerce\ZabbixApi\ZabbixApiException;
 use BytesCommerce\ZabbixApi\ZabbixClientInterface;
 use Psr\Log\LoggerInterface;
 use Symfony\Component\DependencyInjection\Attribute\Autowire;
+use Throwable;
 use Webmozart\Assert\Assert;
 
-final readonly class ZabbixSetup implements ZabbixSetupInterface
+final class ZabbixSetup implements ZabbixSetupInterface
 {
+    private ?int $lastFailureAt = null;
+
     public function __construct(
         private ZabbixClientInterface $client,
         private ZabbixNamingProviderInterface $naming,
@@ -23,6 +26,8 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
         private LoggerInterface $logger,
         #[Autowire('%zabbix_api.setup_enabled%')]
         private bool $setupEnabled,
+        #[Autowire('%zabbix_api.setup_failure_cooldown_seconds%')]
+        private int $setupFailureCooldownSeconds = 300,
         private ?TriggerProvisioner $triggerProvisioner = null,
     ) {
     }
@@ -33,12 +38,46 @@ final readonly class ZabbixSetup implements ZabbixSetupInterface
             return;
         }
 
-        $hostId = $this->registry->getHostId();
-        if ($hostId !== null) {
+        if ($this->hostIdIsCached()) {
             return;
         }
 
-        $this->ensureAll();
+        if ($this->isInFailureCooldown()) {
+            return;
+        }
+
+        try {
+            $this->ensureAll();
+        } catch (Throwable $e) {
+            $this->lastFailureAt = time();
+            $this->logger->warning('Zabbix setup failed; entering cooldown', [
+                'cooldown_seconds' => $this->setupFailureCooldownSeconds,
+                'error' => $e->getMessage(),
+            ]);
+        }
+    }
+
+    private function hostIdIsCached(): bool
+    {
+        try {
+            return $this->registry->getHostId() !== null;
+        } catch (Throwable) {
+            return false;
+        }
+    }
+
+    private function isInFailureCooldown(): bool
+    {
+        if ($this->lastFailureAt === null) {
+            return false;
+        }
+
+        return (time() - $this->lastFailureAt) < $this->setupFailureCooldownSeconds;
+    }
+
+    public function clearFailureState(): void
+    {
+        $this->lastFailureAt = null;
     }
 
     public function ensureAll(): void
